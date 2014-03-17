@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="头文件\RenderSystem">
+      <UniqueIdentifier>{1bd1f7e6-28d3-4da3-bcf6-4acee4a5a92c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\IOSystem">
+      <UniqueIdentifier>{6f35e03a-2a4b-4b6d-96d1-5c25bff87377}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Math">
+      <UniqueIdentifier>{4b7e562a-746c-40d8-92cc-70d8d8922899}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\DirectX11RenderSystem">
+      <UniqueIdentifier>{97563728-fc96-406a-a347-48c769b67e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\SceneManager">
+      <UniqueIdentifier>{55f14231-4531-458d-ba98-8813e78db7b0}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DreComplieConfig.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMath.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerAngles.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Quaternion.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="AABB3.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Line3.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix4.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystem.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreTexture.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSampler.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreHardwareBuffer.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystemCapabilities.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreHardwareVertexBuffer.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystemEnums.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreException.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreReadBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreFileReadBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreFileWriteBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMemoryReadBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreDataBufferEnums.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMemoryWriteBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreDataBufferFactory.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderParam.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreLight.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreHLSLProgram.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreImageLoader.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreFreeImageLoader.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreImage.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderTarget.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderDeclaration.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11RenderSystem.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11Adapter.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreAdapter.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11RenderDeclaration.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11RenderMapping.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreViewport.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11HardwareVertexBuffer.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreHardwareIndexBuffer.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11HardwareIndexBuffer.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11Texture.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11RenderTarget.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11RenderWindow.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderWindow.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11HLSLProgram.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreIOSystemDeclaration.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DrePixelConvert.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DrePixelFormat.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreWriteBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreD3D11ComPtr.h">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystemImpl.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystemFactory.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreNormalImage.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreNode.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreFloatImpl.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DreColor.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreContainer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreTypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMathDeclaration.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DreEvent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderable.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSerializer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreEvent_Imp.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreVisiableBoundsBox.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreBaseMemoryReadBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreBaseMemoryWriteBuffer.h">
+      <Filter>头文件\IOSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreAnimator.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreConvertibleObject.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreAttribution.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreCamera.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreDefaultCamera.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSceneManagerDeclaration.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSceneRootNode.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSceneNode.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Angle.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DreScreenManagerConfig.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreSceneManager.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderQueueImpl.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderGroup.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EulerAngles.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Quaternion.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Vecotr3.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="AABB3.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Matrix4.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DreException.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DreDataBufferFactory.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreReadBuffer.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreFreeImageLoader.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreImage.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreImageLoader.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11RenderSystem.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11Adapter.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11RenderMapping.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11HardwareVertexBuffer.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreHardwareVertexBuffer.cpp">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11HardwareIndexBuffer.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11Texture.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11RenderTarget.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11RenderWindow.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreD3D11HLSLProgram.cpp">
+      <Filter>头文件\DirectX11RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DrePixelFormat.cpp">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreRenderSystemFactory.cpp">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreNormalImage.cpp">
+      <Filter>头文件\IOSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="DreMath.cpp">
+      <Filter>头文件\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DreCamera.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreDefaultCamera.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreConvertibleObject.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreSceneNode.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreSceneRootNode.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreRenderQueue.cpp">
+      <Filter>头文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

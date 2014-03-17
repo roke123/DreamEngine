@@ -1,0 +1,38 @@
+###############################################################################
+When changes are made to this package document them here
+###############################################################################
+
+Every file in distribution:
+ - Modified to move all source and includes into a top-level directory named stlport.
+
+stlport/stl/_algobase.c:
+ - Removed an unreachable return statement to fix a compiler warning.
+
+stlport/stl/_hashtable.c
+ - Modified implementation of hashtable<_Val,_Key,_HF,_Traits,_ExK,_EqK,_All>::erase(const_iterator __first, const_iterator __last) to avoid a parameter shadowing warning on GCC based compilers.
+
+stlport/stl/_cmath.h:
+ - Added gating check for EE_STLP_MATH_ALREADY_GLOBAL which can be defined in a platform config file to prevent multiple definitions when including that platform's math.h file
+
+stlport/stl/config/_ps3.h:
+stlport/stl/config/_xbox360.h:
+stlport/stl/config/_wii.h:
+ - Added to distribution.
+
+stlport/stl/config/_system.h:
+ - Includes _ps3.h, _xbox360.h, or _wii.h when compiling on those platforms
+
+stlport/stl/config/Windows.h:
+ - Defines _STLP_USE_NEWALLOC when _DEBUG is defined.
+
+stlport/stl/config/features.h:
+ - Added a block of code that defines the stlport namespace inside of the efd namespace
+
+stlport/stl/config/user_config.h
+ - Added defines for _STLP_NO_IOSTREAMS and _STLP_DONT_REDEFINE_STD 1
+
+stlport/stl/_bvector.h:
+stlport/stl/_vector.c:
+stlport/stl/_vector.h:
+stlport/stl/pointers/_vector.h:
+- Guarded #define and #undef of vector so that it is only undefined when it was defined in the same file, and an error is produced when it is defined and the compiler had already defined it to be something (as is the case in some altivec enabled compilers).  This allows constructs like 'vector float vfSomething;' to still work after the STLPort <vector> is included somewhere.

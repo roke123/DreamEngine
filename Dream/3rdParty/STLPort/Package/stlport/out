@@ -1,0 +1,125 @@
+class _STLP_CLASS_DECLSPEC char_traits<char>
+class _STLP_CLASS_DECLSPEC char_traits<wchar_t>
+./stl/char_traits.h
+#    define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_EXPORT_DECLSPEC
+#    define  _STLP_CLASS_DECLSPEC  _STLP_CLASS_IMPORT_DECLSPEC
+#  define _STLP_CLASS_DECLSPEC
+#define _STLP_EXPORT_TEMPLATE_CLASS _STLP_EXPORT template class _STLP_CLASS_DECLSPEC
+./stl/config/features.h
+class _STLP_CLASS_DECLSPEC __owned_link;
+class _STLP_CLASS_DECLSPEC __owned_list;
+_STLP_EXPORT_TEMPLATE struct _STLP_CLASS_DECLSPEC __stl_debug_engine<bool>;
+class _STLP_CLASS_DECLSPEC __owned_link {
+class _STLP_CLASS_DECLSPEC __owned_list {
+./stl/debug/_debug.h
+_STLP_EXPORT template struct _STLP_CLASS_DECLSPEC _Deque_iterator<void*, _Nonconst_traits<void*> >;
+./stl/pointers/_deque.h
+_STLP_EXPORT template struct _STLP_CLASS_DECLSPEC less<void*>;
+./stl/pointers/_set.h
+class _STLP_CLASS_DECLSPEC __malloc_alloc {
+class _STLP_CLASS_DECLSPEC __new_alloc {
+class _STLP_CLASS_DECLSPEC __node_alloc {
+class _STLP_CLASS_DECLSPEC allocator<void> {
+./stl/_alloc.h
+class _STLP_CLASS_DECLSPEC _Bs_G
+./stl/_bitset.h
+class _STLP_CLASS_DECLSPEC codecvt_base {
+class _STLP_CLASS_DECLSPEC codecvt<char, char, mbstate_t>
+class _STLP_CLASS_DECLSPEC codecvt<wchar_t, char, mbstate_t>
+class _STLP_CLASS_DECLSPEC codecvt_byname<char, char, mbstate_t>
+class _STLP_CLASS_DECLSPEC codecvt_byname<wchar_t, char, mbstate_t>
+./stl/_codecvt.h
+class _STLP_CLASS_DECLSPEC collate<char> : public locale::facet
+class _STLP_CLASS_DECLSPEC collate<wchar_t> : public locale::facet
+class _STLP_CLASS_DECLSPEC collate_byname<char>: public collate<char>
+class _STLP_CLASS_DECLSPEC collate_byname<wchar_t>: public collate<wchar_t>
+./stl/_collate.h
+_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<float>;
+_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<double>;
+_STLP_TEMPLATE_NULL struct _STLP_CLASS_DECLSPEC complex<long double>;
+struct _STLP_CLASS_DECLSPEC complex<float> {
+struct _STLP_CLASS_DECLSPEC complex<double> {
+struct _STLP_CLASS_DECLSPEC complex<long double> {
+./stl/_complex.h
+class _STLP_CLASS_DECLSPEC ctype_base {
+class _STLP_CLASS_DECLSPEC ctype<char> : public locale::facet, public ctype_base {
+class _STLP_CLASS_DECLSPEC ctype_byname<char>: public ctype<char> {
+class _STLP_CLASS_DECLSPEC ctype<wchar_t> : public locale::facet, public ctype_base
+class _STLP_CLASS_DECLSPEC ctype_byname<wchar_t>: public ctype<wchar_t> {
+./stl/_ctype.h
+class _STLP_CLASS_DECLSPEC exception {
+class _STLP_CLASS_DECLSPEC bad_exception : public exception {
+./stl/_exception.h
+class _STLP_CLASS_DECLSPEC _Filebuf_base {
+class _STLP_CLASS_DECLSPEC _Noconv_output< char_traits<char> > {
+class _STLP_CLASS_DECLSPEC _Underflow< char, char_traits<char> > {
+./stl/_fstream.h
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC ctype<char>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC ctype_byname<char>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC collate<char>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC collate_byname<char>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC ctype<wchar_t>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC ctype_byname<wchar_t>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC collate<wchar_t>;
+_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC collate_byname<wchar_t>;
+//_STLP_TEMPLATE_NULL class _STLP_CLASS_DECLSPEC basic_streambuf<char, char_traits<char> >;
+./stl/_iosfwd.h
+class _STLP_CLASS_DECLSPEC ios_base {
+  class _STLP_CLASS_DECLSPEC failure : public __Named_exception {
+  class _STLP_CLASS_DECLSPEC Init
+./stl/_ios_base.h
+class _STLP_CLASS_DECLSPEC locale {
+  class _STLP_CLASS_DECLSPEC facet : protected _Refcount_Base {
+  _STLP_CLASS_DECLSPEC id {
+./stl/_locale.h
+class _STLP_CLASS_DECLSPEC messages<char> : public locale::facet, public messages_base {
+class _STLP_CLASS_DECLSPEC messages<wchar_t> : public locale::facet, public messages_base {
+class _STLP_CLASS_DECLSPEC messages_byname<char> : public messages<char> {
+class _STLP_CLASS_DECLSPEC messages_byname<wchar_t> : public messages<wchar_t> {
+./stl/_messages_facets.h
+class _STLP_CLASS_DECLSPEC moneypunct<char, true> : public locale::facet, public money_base {
+class _STLP_CLASS_DECLSPEC moneypunct<char, false> : public locale::facet, public money_base
+class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, true> : public locale::facet, public money_base
+class _STLP_CLASS_DECLSPEC moneypunct<wchar_t, false> : public locale::facet, public money_base
+class _STLP_CLASS_DECLSPEC moneypunct_byname<char, true> : public moneypunct<char, true> {
+class _STLP_CLASS_DECLSPEC moneypunct_byname<char, false> : public moneypunct<char, false>
+class _STLP_CLASS_DECLSPEC moneypunct_byname<wchar_t, true> : public moneypunct<wchar_t, true>
+class _STLP_CLASS_DECLSPEC moneypunct_byname<wchar_t, false> : public moneypunct<wchar_t, false>
+./stl/_monetary.h
+class _STLP_CLASS_DECLSPEC numpunct<char> : public locale::facet
+class _STLP_CLASS_DECLSPEC numpunct<wchar_t> : public locale::facet
+class _STLP_CLASS_DECLSPEC numpunct_byname<char> : public numpunct<char> {
+class _STLP_CLASS_DECLSPEC numpunct_byname<wchar_t>: public numpunct<wchar_t> {
+./stl/_numpunct.h
+class _STLP_CLASS_DECLSPEC _Pthread_alloc {
+class _STLP_CLASS_DECLSPEC pthread_allocator<void> {
+class _STLP_CLASS_DECLSPEC per_thread_allocator<void> {
+./stl/_pthread_alloc.h
+class _STLP_CLASS_DECLSPEC logic_error : public __Named_exception {
+class _STLP_CLASS_DECLSPEC runtime_error : public __Named_exception {
+class _STLP_CLASS_DECLSPEC domain_error : public logic_error {
+class _STLP_CLASS_DECLSPEC invalid_argument : public logic_error {
+class _STLP_CLASS_DECLSPEC length_error : public logic_error {
+class _STLP_CLASS_DECLSPEC out_of_range : public logic_error {
+class _STLP_CLASS_DECLSPEC range_error : public runtime_error {
+class _STLP_CLASS_DECLSPEC overflow_error : public runtime_error {
+class _STLP_CLASS_DECLSPEC underflow_error : public runtime_error {
+./stl/_stdexcept.h
+class _STLP_CLASS_DECLSPEC __Named_exception : public _STLP_EXCEPTION_BASE {
+./stl/_stdexcept_base.h
+struct _STLP_CLASS_DECLSPEC hash<string> {
+struct _STLP_CLASS_DECLSPEC hash<wstring> {
+./stl/_string_hash.h
+class _STLP_CLASS_DECLSPEC strstreambuf : public basic_streambuf<char, char_traits<char> > {
+class _STLP_CLASS_DECLSPEC istrstream : public basic_istream<char, char_traits<char> > {
+class _STLP_CLASS_DECLSPEC ostrstream : public basic_ostream<char, char_traits<char> >
+class _STLP_CLASS_DECLSPEC strstream : public basic_iostream<char, char_traits<char> > {
+./stl/_strstream.h
+struct _STLP_CLASS_DECLSPEC _STLP_mutex_base {
+class _STLP_CLASS_DECLSPEC _STLP_mutex : public _STLP_mutex_base {
+struct _STLP_CLASS_DECLSPEC _STLP_auto_lock {
+class _STLP_CLASS_DECLSPEC _Refcount_Base {
+./stl/_threads.h
+class _STLP_CLASS_DECLSPEC _Time_Info {
+class _STLP_CLASS_DECLSPEC time_base {
+./stl/_time_facets.h

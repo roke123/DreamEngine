@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dream", "Dream\Dream.vcxproj", "{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "Dream\test\test.vcxproj", "{CFC97EA5-961B-4E07-BE0D-4166D9CDC166}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DreamTest", "DreamTest\DreamTest.vcxproj", "{614080DE-D141-47D9-9F44-2D5853A98E97}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}.Debug|Win32.Build.0 = Debug|Win32
+		{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}.Release|Win32.ActiveCfg = Release|Win32
+		{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}.Release|Win32.Build.0 = Release|Win32
+		{CFC97EA5-961B-4E07-BE0D-4166D9CDC166}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CFC97EA5-961B-4E07-BE0D-4166D9CDC166}.Debug|Win32.Build.0 = Debug|Win32
+		{CFC97EA5-961B-4E07-BE0D-4166D9CDC166}.Release|Win32.ActiveCfg = Release|Win32
+		{CFC97EA5-961B-4E07-BE0D-4166D9CDC166}.Release|Win32.Build.0 = Release|Win32
+		{614080DE-D141-47D9-9F44-2D5853A98E97}.Debug|Win32.ActiveCfg = Debug|Win32
+		{614080DE-D141-47D9-9F44-2D5853A98E97}.Debug|Win32.Build.0 = Debug|Win32
+		{614080DE-D141-47D9-9F44-2D5853A98E97}.Release|Win32.ActiveCfg = Release|Win32
+		{614080DE-D141-47D9-9F44-2D5853A98E97}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

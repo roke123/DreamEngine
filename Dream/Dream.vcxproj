@@ -1,0 +1,205 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AABB3.h" />
+    <ClInclude Include="Angle.h" />
+    <ClInclude Include="DreAttribution.h" />
+    <ClInclude Include="DreCamera.h" />
+    <ClInclude Include="DreConvertibleObject.h" />
+    <ClInclude Include="DreAnimator.h" />
+    <ClInclude Include="DreBaseMemoryReadBuffer.h" />
+    <ClInclude Include="DreBaseMemoryWriteBuffer.h" />
+    <ClInclude Include="DreD3D11ComPtr.h" />
+    <ClInclude Include="DreD3D11HardwareIndexBuffer.h" />
+    <ClInclude Include="DreD3D11HardwareVertexBuffer.h" />
+    <ClInclude Include="DreD3D11HLSLProgram.h" />
+    <ClInclude Include="DreD3D11RenderMapping.h" />
+    <ClInclude Include="DreAdapter.h" />
+    <ClInclude Include="DreColor.h" />
+    <ClInclude Include="DreComplieConfig.h" />
+    <ClInclude Include="DreContainer.h" />
+    <ClInclude Include="DreD3D11Adapter.h" />
+    <ClInclude Include="DreD3D11RenderDeclaration.h" />
+    <ClInclude Include="DreD3D11RenderSystem.h" />
+    <ClInclude Include="DreD3D11RenderTarget.h" />
+    <ClInclude Include="DreD3D11RenderWindow.h" />
+    <ClInclude Include="DreD3D11Texture.h" />
+    <ClInclude Include="DreDefaultCamera.h" />
+    <ClInclude Include="DreEvent_Imp.h" />
+    <ClInclude Include="DreFileReadBuffer.h" />
+    <ClInclude Include="DreDataBufferEnums.h" />
+    <ClInclude Include="DreDataBufferFactory.h" />
+    <ClInclude Include="DreFileWriteBuffer.h" />
+    <ClInclude Include="DreFloatImpl.h" />
+    <ClInclude Include="DreFreeImageLoader.h" />
+    <ClInclude Include="DreHardwareIndexBuffer.h" />
+    <ClInclude Include="DreHLSLProgram.h" />
+    <ClInclude Include="DreImage.h" />
+    <ClInclude Include="DreImageLoader.h" />
+    <ClInclude Include="DreIOSystemDeclaration.h" />
+    <ClInclude Include="DreMathDeclaration.h" />
+    <ClInclude Include="DreMemoryReadBuffer.h" />
+    <ClInclude Include="DreNormalImage.h" />
+    <ClInclude Include="DrePixelConvert.h" />
+    <ClInclude Include="DrePixelFormat.h" />
+    <ClInclude Include="DreReadBuffer.h" />
+    <ClInclude Include="DreRenderable.h" />
+    <ClInclude Include="DreRenderDeclaration.h" />
+    <ClInclude Include="DreRenderGroup.h" />
+    <ClInclude Include="DreRenderQueue.h" />
+    <ClInclude Include="DreRenderQueueImpl.h" />
+    <ClInclude Include="DreRenderSystemEnums.h" />
+    <ClInclude Include="DreException.h" />
+    <ClInclude Include="DreHardwareBuffer.h" />
+    <ClInclude Include="DreHardwareVertexBuffer.h" />
+    <ClInclude Include="DreLight.h" />
+    <ClInclude Include="DreRenderParam.h" />
+    <ClInclude Include="DreMath.h" />
+    <ClInclude Include="DreRenderSystem.h" />
+    <ClInclude Include="DreRenderSystemCapabilities.h" />
+    <ClInclude Include="DreRenderSystemFactory.h" />
+    <ClInclude Include="DreRenderSystemImpl.h" />
+    <ClInclude Include="DreRenderTarget.h" />
+    <ClInclude Include="DreRenderWindow.h" />
+    <ClInclude Include="DreSampler.h" />
+    <ClInclude Include="DreSceneManagerDeclaration.h" />
+    <ClInclude Include="DreSceneNode.h" />
+    <ClInclude Include="DreSceneManager.h" />
+    <ClInclude Include="DreSceneRootNode.h" />
+    <ClInclude Include="DreScreenManagerConfig.h" />
+    <ClInclude Include="DreSerializer.h" />
+    <ClInclude Include="DreTexture.h" />
+    <ClInclude Include="DreTypes.h" />
+    <ClInclude Include="DreUtility.h" />
+    <ClInclude Include="DreViewport.h" />
+    <ClInclude Include="DreVisiableBoundsBox.h" />
+    <ClInclude Include="DreWriteBuffer.h" />
+    <ClInclude Include="EulerAngles.h" />
+    <ClInclude Include="DreMemoryWriteBuffer.h" />
+    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Line3.h" />
+    <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="DreNode.h" />
+    <ClInclude Include="Plane.h" />
+    <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="DreEvent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AABB3.cpp" />
+    <ClCompile Include="DreCamera.cpp" />
+    <ClCompile Include="DreConvertibleObject.cpp" />
+    <ClCompile Include="DreD3D11Adapter.cpp" />
+    <ClCompile Include="DreD3D11HardwareIndexBuffer.cpp" />
+    <ClCompile Include="DreD3D11HardwareVertexBuffer.cpp" />
+    <ClCompile Include="DreD3D11HLSLProgram.cpp" />
+    <ClCompile Include="DreD3D11RenderMapping.cpp" />
+    <ClCompile Include="DreD3D11RenderSystem.cpp" />
+    <ClCompile Include="DreD3D11RenderTarget.cpp" />
+    <ClCompile Include="DreD3D11RenderWindow.cpp" />
+    <ClCompile Include="DreD3D11Texture.cpp" />
+    <ClCompile Include="DreDataBufferFactory.cpp" />
+    <ClCompile Include="DreDefaultCamera.cpp" />
+    <ClCompile Include="DreException.cpp" />
+    <ClCompile Include="DreFreeImageLoader.cpp" />
+    <ClCompile Include="DreHardwareVertexBuffer.cpp" />
+    <ClCompile Include="DreImage.cpp" />
+    <ClCompile Include="DreImageLoader.cpp" />
+    <ClCompile Include="DreMath.cpp" />
+    <ClCompile Include="DreNormalImage.cpp" />
+    <ClCompile Include="DrePixelFormat.cpp" />
+    <ClCompile Include="DreRenderQueue.cpp" />
+    <ClCompile Include="DreRenderSystemFactory.cpp" />
+    <ClCompile Include="EulerAngles.cpp" />
+    <ClCompile Include="Matrix4.cpp" />
+    <ClCompile Include="Quaternion.cpp" />
+    <ClCompile Include="DreSceneNode.cpp" />
+    <ClCompile Include="DreSceneRootNode.cpp" />
+    <ClCompile Include="Vecotr3.cpp" />
+    <ClCompile Include="DreReadBuffer.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8BC21DF2-ABE7-4853-90A1-944BEA93DB99}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Dream</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>D:\常用软件\DirectX\Include;.\3rdParty\FreeImage;.\3rdParty\boost;.\3rdParty\STLPort\Package;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\常用软件\DirectX\Lib\x86;.\3rdParty\boost\stage\lib;.\3rdParty\FreeImage;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>D:\常用软件\DirectX\Include;.\3rdParty\FreeImage;.\3rdParty\boost;.\3rdParty\STLPort\Package;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\常用软件\DirectX\Lib\x86;.\3rdParty\boost\stage\lib;.\3rdParty\FreeImage;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_STLP_DEBUG;DREAM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>FreeImage.lib;libboost_filesystem-vc110-mt-gdp-1_53.lib;DxErr.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;D3DX11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;DREAM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>FreeImage.lib;libboost_filesystem-vc110-mt-1_53.lib;DxErr.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;D3DX11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

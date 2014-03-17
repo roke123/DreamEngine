@@ -1,0 +1,408 @@
+#ifndef __DREENUMS_H__
+#define __DREENUMS_H__
+
+namespace dream
+{
+
+	/// 缩小纹理，放大纹理，纹理mip采样方法
+	enum DRE_FILTER_OPTION
+	{
+		DRE_FILTER_MIN_MAG_MIP_POINT,               
+		DRE_FILTER_MIN_MAG_POINT_MIP_LINEAR,        
+		DRE_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT,  
+		DRE_FILTER_MIN_POINT_MAG_MIP_LINEAR,        
+		DRE_FILTER_MIN_LINEAR_MAG_MIP_POINT,        
+		DRE_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR, 
+		DRE_FILTER_MIN_MAG_LINEAR_MIP_POINT,        
+		DRE_FILTER_MIN_MAG_MIP_LINEAR,     
+		/// 各向异性取样
+		DRE_FILTER_ANISOTROPIC,                     
+	};	// end enum DRE_FILTER_OPTION
+
+	/// 纹理坐标寻址方式
+	enum DRE_TEXTURE_ADDRESS_MODE 
+	{
+		DRE_TEXTURE_ADDRESS_WRAP          = 1,
+		DRE_TEXTURE_ADDRESS_MIRROR        = 2,
+		DRE_TEXTURE_ADDRESS_CLAMP         = 3,
+		DRE_TEXTURE_ADDRESS_BORDER        = 4,
+		DRE_TEXTURE_ADDRESS_MIRROR_ONCE   = 5                   
+	};	// end enum DRE_TEXTURE_ADDRESS_MODE
+
+	/// 渲染像素着色方式
+	enum DRE_SHADER_OPTION
+	{
+		DRE_SHADER_FLAT,
+		/// 高洛德着色，DirectX11采用的方法
+		DRE_SHADER_GOURAUD,
+		/// Phong着色，运算比Gouraud着色复杂，但效果比前者逼真
+		DRE_SHADER_PHONG
+	};	// end enum DRE_SHADER_OPTION
+
+	/// 比较函数枚举
+	enum DRE_COMPARISON_FUNC : unsigned int 
+	{
+		/// 从不比较
+		DRE_COMPARISON_NEVER,
+		/// 小于等于时比较成功
+		DRE_COMPARISON_LESSEQUAL,
+		/// 等于时比较成功
+		DRE_COMPARISON_EQUAL,
+		/// 小于时比较成功
+		DRE_COMPARISON_LESS,
+		/// 不相等时比较成功
+		DRE_COMPARISON_NOTEQUAL,
+		/// 大于等于时比较成功
+		DRE_COMPARISON_GREATEREQUAL,
+		/// 大于时比较成功
+		DRE_COMPARISON_GREATER,
+		/// 总是成功
+		DRE_COMPARISON_ALWAYS
+	};	// end enum DRE_COMPARISON_FUNC
+
+	/// 颜色混合因子
+	enum DRE_BLEND_COLOR_FACTOR : unsigned int
+	{
+		/// 把混合颜色设为(0, 0, 0, 0)
+		DRE_BLEND_ZERO_COLOR,		
+		/// 把混合颜色设为(1, 1, 1, 1)
+		DRE_BLEND_ONE_COLOR,
+		/// 把混合颜色设为Dest(from RenderTarget)
+		DRE_BLEND_COLOR_FROM_RENDER_TARGET, 		
+		/// 把混合颜色设为1 - Dest(from RenderTarget)
+		DRE_BLEND_INV_COLOR_FROM_RENDER_TARGET,
+		/// 把混合颜色设为Src(from PixelOutput)
+		DRE_BLEND_COLOR_FROM_PIXEL_SHADER,
+		/// 把混合颜色设为1 - Src(from PixelOutput)
+		DRE_BLEND_INV_COLOR_FROM_PIXEL_SHADER, 
+	};	// end enum DRE_BLEND_COLOR_FACTOR
+
+	/// 透明度混合因子
+	enum DRE_BLEND_ALPHA_FACTOR : unsigned int
+	{
+		/// 把混合透明度设为0
+		DRE_BLEND_ZERO_ALPHA,		
+		/// 把混合透明度设为1
+		DRE_BLEND_ONE_ALPHA,
+		/// 把混合透明度设为Src(form PixelOutput)
+		DRE_BLEND_ALPHA_FROM_RENDER_TARGET,
+		/// 把混合透明度设为Src(form PixelOutput)
+		DRE_BLEND_INV_ALPHA_FROM_RENDER_TARGET,
+		/// 把混合透明度设为Dest(form RenderTarget)
+		DRE_BLEND_ALPHA_FROM_PIXEL_SHADER,
+		/// 把混合颜色设为1 - Dest(form RenderTarget)
+		DRE_BLEND_INV_ALPHA_FROM_PIXEL_SHADER,
+	};	// end enum DRE_BLEND_ALPHA_FACTOR
+
+	enum DRE_BLEND_OPERATION : unsigned int
+	{
+		/// src1 + src2 
+		DRE_BLEND_ADD_OPERATION,
+		/// src2 - src1
+		DRE_BLEND_SUBTRACT_OPERATION,
+		/// src1 - src2
+		DRE_BLEND_REVERSE_SUBTRACT_OPERATION,
+		/// min(src1, src2)
+		DRE_BLEND_MIN_OPERATION,
+		/// max(src1, src2)
+		DRE_BLEND_MAX_OPERATION,
+	};	// end enum DRE_BLEND_OPERATION
+
+	enum DRE_COLOR_CHANNEL
+	{
+		/// 空白通道，不允许任何颜色通过
+		DRE_COLOR_NONE_CHANNEL = 0,
+		/// 红色通道，只允许红色通过
+		DRE_COLOR_RED_CHANNEL = 1,
+		/// 绿色通道，只允许绿色通过
+		DRE_COLOR_GREEN_CHANNEL = 2,
+		/// 黄色通道，只允许黄色通过
+		DRE_COLOR_BLUE_CHANNEL = 4,
+		/// 透明度通道，只允许透明度通过
+		DRE_COLOR_ALPHA_CHANNEL = 8,
+		/// RGB通道，只允许RGB通过
+		DRE_COLOR_RGB_CHANNEL = 14,
+		/// 全
+		DRE_COLOR_ALL_CHANNEL = 15
+	};	// end enum DRE_COLOR_CHANNEL
+
+	enum DRE_CULL_MODE
+	{
+		/// 不消除
+		DRE_CULL_NONE    = 1,
+		/// 前面消隐
+		DRE_CULL_FRONT   = 2,
+		/// 背面消隐
+		DRE_CULL_BACK    = 3 
+	};	// end enum DRE_CULL_MODE
+
+	/// 蒙版缓冲操作，与readMask和writeMask配合使用
+	enum DRE_STENCIL_OPEARTION
+	{
+		/// 保存当前的stencil value
+		DRE_STENCIL_OPEARTION_KEEP       = 1,
+		/// 使stencil value为0
+		DRE_STENCIL_OPEARTION_ZERO       = 2,
+		/// 用当前的stencil value替换
+		DRE_STENCIL_OPEARTION_REPLACE    = 3,
+		DRE_STENCIL_OPEARTION_INCR_SAT   = 4,
+		DRE_STENCIL_OPEARTION_DECR_SAT   = 5,
+		DRE_STENCIL_OPEARTION_INVERT     = 6,
+		DRE_STENCIL_OPEARTION_INCR       = 7,
+		DRE_STENCIL_OPEARTION_DECR       = 8 
+	};	// end enum DRE_STENCIL_OPERATION
+
+	enum DRE_PRIMITIVE_TOPOLOGY 
+	{
+		DRE_PRIMITIVE_TOPOLOGY_UNDEFINED                    = 0,
+		/// 图形拓扑类型为点列表，只画点
+		DRE_PRIMITIVE_TOPOLOGY_POINTLIST                    = 1,
+		/// 图形拓扑类型为点列表，每两点之间连一条线
+		DRE_PRIMITIVE_TOPOLOGY_LINELIST                     = 2,
+		/// 图形拓扑类型为点带，两点之间连一条线，上一条线的终点是下一条线的起点
+		DRE_PRIMITIVE_TOPOLOGY_LINESTRIP                    = 3,
+		/// 图形拓扑类型为三角形列表，每三点之间生成一个三角形
+		DRE_PRIMITIVE_TOPOLOGY_TRIANGLELIST                 = 4,
+		/// 图形拓扑类型为三角形带，三点之间生成一个三角形，上一三角形的终点是下一三角形的起点
+		DRE_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP                = 5,
+		/// 以下参数只在D3D11中提供，现暂不支持
+		/*DRE_PRIMITIVE_TOPOLOGY_LINELIST_ADJ                 = 10,
+		DRE_PRIMITIVE_TOPOLOGY_LINESTRIP_ADJ                = 11,
+		DRE_PRIMITIVE_TOPOLOGY_TRIANGLELIST_ADJ             = 12,
+		DRE_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP_ADJ            = 13,*/
+	};
+
+	/// 描述申请的内存空间被如何使用
+	enum DRE_BUFFER_USAGE
+	{
+		/// 默认GPU内存空间，CPU不可读写
+		DRE_BUFFER_USAGE_DEFAULT = 0,
+		/// 静态内存空间，用于存放GPU复制到CPU内存空间的数据，可读写
+		DRE_BUFFER_USAGE_STATIC = 1,
+		/// 动态内存空间，用于存放GPU渲染管道使用的数据，可读写
+		DRE_BUFFER_USAGE_DYNAMIC = 2,
+		/// 只读标志
+		DRE_BUFFER_USAGE_WRITEONLY = 4,
+		/// 可丢弃标志，lock后资源失效，即GPU渲染管道不可继续使用，常用于只使用一次的资源
+		DRE_BUFFER_USAGE_DISCARDABLE = 8,
+		/// 只读的静态内存空间
+		DRE_BUFFER_USAGE_STATIC_WRITE_ONLY = 5,
+		/// 静态内存空间，创建于CPU内存空间无可丢弃概念
+		/// DRE_BUFFER_USAGE_STATIC_WRITE_ONLY_DISCARDABLE = 13
+		/// 只读的动态内存空间
+		DRE_BUFFER_USAGE_DYNAMIC_WRITE_ONLY = 6,
+		/// 可丢弃的只读的动态内存空间
+		DRE_BUFFER_USAGE_DYNAMIC_WRITE_ONLY_DISCARDABLE = 14
+	};
+
+	/// 锁定内存空间可选项，如不能使用则抛出异常
+	enum DRE_LOCK_OPTIONS
+	{
+		/// 读写锁定
+		DRE_LOCK_READWRITE,
+		/// 读写锁定，并抛弃锁定资源
+		DRE_LOCK_DISCARD,
+		/// 只读锁定
+		HDRE_LOCK_READ_ONLY,
+		/// 只写锁定
+		DRE_LOCK_WRITE_ONLY,
+		/// 表示该部分资源在当前帧渲染(IA使用设置后)内不会被重写
+		DRE_LOCK_NO_OVERWRITE,			
+	};
+
+	/// 雾化模式，dest = src * fog + fogColor * (1 - fog)
+	enum DRE_FOG_MODE
+	{
+		/// 不进行雾化
+		DRE_FOG_NONE_MODE,
+		/// 线性雾化， fog = (end - d) / (end - start)
+		DRE_FOG_LINEAR_MODE,
+		/// Exp雾化， fog = 1 / e^(d * density)
+		DRE_FOG_EXP_MODE,
+		/// Exp2雾化， fog = 1 / e^((d * density)^2)
+		DRE_FOG_EXP2_MODE,
+	};	// enum enum DRE_FOG_MODE
+
+	/// 填充模式
+	enum DRE_FILL_MODE
+	{
+		/// 点填充，只画出每个点
+		DRE_FILL_POINT_MODE         = 1,
+		/// 线框填充，只画出每条边
+		DRE_FILL_WIREFRAME_MODE     = 2,
+		/// 实体填充，画出每个像素
+		DRE_FILL_SOLID_MODE         = 3,
+	};	// end enum DRE_FILL_MODE
+
+	   /// 顶点元素语义
+	enum DRE_VERTEX_EMELENT_SEMANTICS {
+		/// 位置数据，3 float per vertex
+		DRE_VERTEX_ELEMENT_POSITION = 0,
+		/// 混合比重
+		DRE_VERTEX_ELEMENT_BLEND_WEIGHTS = 1,
+        /// 混合索引
+        DRE_VERTEX_ELEMENT_BLEND_INDICES = 2,
+		/// 法线数据, 3 float per vertex
+		DRE_VERTEX_ELEMENT_NORMAL = 3,
+		/// 漫反射颜色
+		DRE_VERTEX_ELEMENT_DIFFUSE = 4,
+		/// 镜面反射颜色
+		DRE_VERTEX_ELEMENT_SPECULAR = 5,
+		/// 纹理坐标
+		DRE_VERTEX_ELEMENT_TEXTURE_COORDINATES = 6,
+        /// 副法线数据
+        DRE_VERTEX_ELEMENT_BINORMAL = 7,
+        /// 切线数据
+        DRE_VERTEX_ELEMENT_TANGENT = 8,
+		/// 自定义数据
+		DRE_VERTEX_ELEMENT_CUSTOM = 9,
+	};
+
+    /// 顶点元素类型
+    enum DRE_VERTEX_ELEMENT_TYPE
+    {
+        DRE_VERTEX_EMELENT_TYPE_FLOAT1 = 0,
+        DRE_VERTEX_EMELENT_TYPE_FLOAT2 = 1,
+        DRE_VERTEX_EMELENT_TYPE_FLOAT3 = 2,
+        DRE_VERTEX_EMELENT_TYPE_FLOAT4 = 3,
+		DRE_VERTEX_EMELENT_TYPE_SHORT1 = 4,
+		DRE_VERTEX_EMELENT_TYPE_SHORT2 = 5,
+		DRE_VERTEX_EMELENT_TYPE_SHORT3 = 6,
+		DRE_VERTEX_EMELENT_TYPE_SHORT4 = 7,
+        DRE_VERTEX_EMELENT_TYPE_UBYTE4 = 8,
+        /// D3D style compact colour
+        DRE_VERTEX_EMELENT_TYPE_COLOUR_ARGB = 9,
+        /// GL style compact colour
+        DRE_VERTEX_EMELENT_TYPE_COLOUR_ABGR = 10
+    };
+
+	/// 索引元素类型
+	enum DRE_INDEX_ELEMENT_TYPE
+	{
+		/// 16位索引
+		DRE_INDEX_ELEMENT_TYPE_U16 = sizeof(u16),
+		/// 32位索引
+		DRE_INDEX_ELEMENT_TYPE_U32 = sizeof(u32),
+	};
+
+	enum DRE_MATERIAL_COLOR_OPTIONS
+	{
+		/// 不使用任何材质颜色
+        DRE_MATERIAL_COLOR_NONE			= 0x0,
+		/// 对ambient（环境光反射系数）使用材质颜色
+        DRE_MATERIAL_COLOR_AMBIENT		= 0x1,     
+		/// 对duffuse（漫射光反射系数）使用材质颜色
+        DRE_MATERIAL_COLOR_DIFFUSE		= 0x2,
+		/// 对specular（镜面光反射系数）使用材质颜色
+        DRE_MATERIAL_COLOR_SPECULAR		= 0x4,
+		/// 对emissive（自发光）使用材质颜色
+        DRE_MATERIAL_COLOR_EMISSIVE		= 0x8,
+		/// use all
+		DRE_MATERIAL_COLOR_ALL			= DRE_MATERIAL_COLOR_AMBIENT | DRE_MATERIAL_COLOR_DIFFUSE | 
+										  DRE_MATERIAL_COLOR_SPECULAR | DRE_MATERIAL_COLOR_EMISSIVE,
+    };
+
+//------------------------------------------------- 渲染特性 --------------------------------------------------//
+
+	enum DRE_CAPABILITIES_CATEGORY
+	{
+		DRE_CAPABILITIES_CATEGORY_COMMON	= 0,
+		DRE_CAPABILITIES_CATEGORY_COMMON_2	= 1,
+		DRE_CAPABILITIES_CATEGORY_D3D		= 2,
+		DRE_CAPABILITIES_CATEGORY_GL		= 3,
+		DRE_CAPABILITIES_CATEGORY_COUNT		= 4,
+	};
+
+	#define CAPS_BITSHIFT (32 - DRE_CAPABILITIES_CATEGORY_COUNT)
+	#define CAPS_CATEGORY_MASK (((1 << DRE_CAPABILITIES_CATEGORY_COUNT) - 1) << CAPS_BITSHIFT)
+	#define CAPS_SET_VALUE(cat, val) ((cat << CAPS_BITSHIFT) | (1 << val))
+
+	enum DRE_CAPABILITIES_FEATURE
+	{
+		/// 支持硬件生成map
+		DRE_CAPABILITIES_AUTOMIPMAP              = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 0),
+		DRE_CAPABILITIES_BLENDING                = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 1),
+		/// 支持各向异性过滤
+		DRE_CAPABILITIES_ANISOTROPY              = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 2),
+		/// 支持DOT3纹理混合
+		DRE_CAPABILITIES_DOT3                    = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 3),
+		/// 支持CubeMapping
+		DRE_CAPABILITIES_CUBEMAPPING             = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 4),
+		/// 支持StencilBuffer
+		DRE_CAPABILITIES_HWSTENCIL               = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 5),
+		/// 支持顶点和索引缓存
+		DRE_CAPABILITIES_VERTEXANDINDEXBUFFER	= CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 7),
+		/// 支持顶点渲染
+		DRE_CAPABILITIES_VERTEX_PROGRAM          = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 9),
+		/// 支持像素渲染
+		DRE_CAPABILITIES_FRAGMENT_PROGRAM        = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 10),
+		/// 支持视口的裁剪测试(透视变换矩阵裁剪)
+		DRE_CAPABILITIES_SCISSOR_TEST            = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 11),
+		/// 支持双面模板
+		DRE_CAPABILITIES_TWO_SIDED_STENCIL       = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 12),
+		/// 支持限定模板值范围
+		DRE_CAPABILITIES_STENCIL_WRAP            = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 13),
+		/// Supports hardware occlusion queries
+		DRE_CAPABILITIES_HWOCCLUSION             = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 14),
+		/// 支持自定义裁剪面
+		DRE_CAPABILITIES_USER_CLIP_PLANES        = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 15),
+		/// 顶点结构是否支持4byte的类型
+		DRE_CAPABILITIES_VERTEX_FORMAT_UBYTE4    = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 16),
+		/// 支持无限远平面的投影
+		DRE_CAPABILITIES_INFINITE_FAR_PLANE      = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 17),
+		/// 支持texture为渲染目标
+		DRE_CAPABILITIES_HWRENDER_TO_TEXTURE     = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 18),
+		/// 支持float类型(0.0 - 1.0)的texture
+		DRE_CAPABILITIES_TEXTURE_FLOAT           = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 19),
+		/// 支持长宽非2的倍数的texture
+		DRE_CAPABILITIES_NON_POWER_OF_2_TEXTURES = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 20),
+		/// 支持3Dtexture
+		DRE_CAPABILITIES_TEXTURE_3D              = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 21),
+		/// 支持点sprites(精灵)渲染
+		DRE_CAPABILITIES_POINT_SPRITES           = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 22),
+		/// 支持点扩展参数 (minsize, maxsize, attenuation)
+		DRE_CAPABILITIES_POINT_EXTENDED_PARAMETERS = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 23),
+		/// 支持顶点纹理抓取
+		DRE_CAPABILITIES_VERTEX_TEXTURE_FETCH = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 24),
+		/// 支持mipmap level偏移
+		DRE_CAPABILITIES_MIPMAP_LOD_BIAS = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 25),
+		/// 支持geometry渲染
+		DRE_CAPABILITIES_GEOMETRY_PROGRAM = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 26),
+		/// 支持渲染到顶点缓冲
+		DRE_CAPABILITIES_HWRENDER_TO_VERTEX_BUFFER = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON, 27),
+
+		/// 支持纹理压缩
+		DRE_CAPABILITIES_TEXTURE_COMPRESSION = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 0),
+		/// 支持DXT/ST3C格式的纹理压缩
+		DRE_CAPABILITIES_TEXTURE_COMPRESSION_DXT = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 1),
+		/// 支持VTC格式的压缩纹理
+		DRE_CAPABILITIES_TEXTURE_COMPRESSION_VTC = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 2),
+		/// 支持PVRTC格式的压缩纹理
+		DRE_CAPABILITIES_TEXTURE_COMPRESSION_PVRTC = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 3),
+		/// 支持固定渲染管道
+		DRE_CAPABILITIES_FIXED_FUNCTION = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 4),
+		/// 支持多个渲染目标使用不同的深度缓冲
+		DRE_CAPABILITIES_MRT_DIFFERENT_BIT_DEPTHS = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 5),
+		/// 支持透明度通道
+		DRE_CAPABILITIES_ALPHA_TO_COVERAGE = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 6),
+		/// 支持多种混合方法
+		DRE_CAPABILITIES_ADVANCED_BLEND_OPERATIONS = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 7),
+		/// 支持渲染目标和深度缓冲分离
+		DRE_CAPABILITIES_RTT_SEPARATE_DEPTHBUFFER = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 8),
+		/// 支持使用主深度缓冲
+		DRE_CAPABILITIES_RTT_MAIN_DEPTHBUFFER_ATTACHABLE = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 9),
+		/// 支持深度缓冲小于渲染目标
+		DRE_CAPABILITIES_RTT_DEPTHBUFFER_RESOLUTION_LESSEQUAL = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 10),
+		/// 支持实例数据的顶点缓冲
+		DRE_CAPABILITIES_VERTEX_BUFFER_INSTANCE_DATA = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 11),
+		/// 支持编译shader缓冲
+		DRE_CAPABILITIES_CAN_GET_COMPILED_SHADER_BUFFER = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 12),
+
+		// ***** DirectX specific caps *****
+		/// Is DirectX feature "per stage constants" supported
+		DRE_CAPABILITIES_PERSTAGECONSTANT = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_D3D, 0),
+	};
+
+};	// end namespace dream
+
+#endif	// end __DREENUMS_H__
