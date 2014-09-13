@@ -34,6 +34,9 @@
     <Filter Include="头文件\Thread">
       <UniqueIdentifier>{833d6b8e-a72b-4a48-91a3-e421d9c0879b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\SceneManager\Component">
+      <UniqueIdentifier>{2cbd73a9-b991-4862-a68a-4ba3f64d7829}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DreMath.h">
@@ -189,9 +192,6 @@
     <ClInclude Include="DreMathDeclaration.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
-    <ClInclude Include="DreRenderable.h">
-      <Filter>头文件\SceneManager</Filter>
-    </ClInclude>
     <ClInclude Include="DreSerializer.h">
       <Filter>头文件\IOSystem</Filter>
     </ClInclude>
@@ -279,9 +279,6 @@
     <ClInclude Include="DreComponent.h">
       <Filter>头文件\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="DreLight.h">
-      <Filter>头文件\SceneManager</Filter>
-    </ClInclude>
     <ClInclude Include="DreMesh.h">
       <Filter>头文件\SceneManager</Filter>
     </ClInclude>
@@ -332,6 +329,15 @@
     </ClInclude>
     <ClInclude Include="DreThreadConfigBoost.h">
       <Filter>头文件\Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="LightComponent.h">
+      <Filter>头文件\SceneManager\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="DreLight.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderable.h">
+      <Filter>头文件\RenderSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -439,6 +445,9 @@
     </ClCompile>
     <ClCompile Include="DreComponent.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="DreSceneManager.cpp">
+      <Filter>头文件\SceneManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

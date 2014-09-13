@@ -1,18 +1,17 @@
 #ifndef __DRERENDERABLE_H__
 #define __DRERENDERABLE_H__
 
-/// scene manager
-#include "DreSceneManagerDeclaration.h"
-#include "DreComponent.h"
-#include "DreEvent.h"
-
 /// render system
 #include "DreRenderDeclaration.h"
+
+#include "DreEvent.h"
+#include "DreComponent.h"
 
 namespace dream
 {
 	typedef function<void (RenderSystem& renderSystem, Renderable& object)> RenderEventHandler;
 
+	/** 用作一个最基本的渲染单位 */
 	class Renderable : public Component
 	{
 		class RenderEvent final : public Event<RenderEventHandler>
@@ -32,9 +31,6 @@ namespace dream
 			}
 		};
 
-	private:
-		
-
 	public:
 		/** 构造函数
 		*/
@@ -44,9 +40,7 @@ namespace dream
 		*/
 		virtual ~Renderable() {};
 
-		/** 渲染该Renderable
-		*/
-		virtual void Render(RenderSystemPtr& renderSystem) = 0;
+		virtual void _FillRenderParameters(RenderSystem* renderSystem);
 
 		/** 取得Renderable的碰撞盒
 		*/

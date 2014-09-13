@@ -9,9 +9,9 @@
 #include "DreIOSystemDeclaration.h"
 #include "DreMathDeclaration.h"
 
+#include "DreRenderSystemConfig.h"
 #include "DreRenderSystemEnums.h"
 #include "DrePixelFormat.h"
-#include "DreSampler.h"
 
 namespace dream
 {
@@ -74,7 +74,11 @@ namespace dream
 
 	class Light;
 	typedef shared_ptr<Light>							LightPtr;
-	typedef list<Light>									LightList;
+	typedef list<LightPtr>								LightList;
+
+	class Renderable;
+	typedef shared_ptr<Renderable>						RenderablePtr;
+	typedef vector<RenderablePtr>						RenderableList;
 
 	class Pass;
 	typedef shared_ptr<Pass>							PassPtr;

@@ -105,6 +105,7 @@
     <ClInclude Include="EulerAngles.h" />
     <ClInclude Include="DreMemoryWriteBuffer.h" />
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="LightComponent.h" />
     <ClInclude Include="Line3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="Plane.h" />
@@ -142,6 +143,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="DreRenderSystemFactory.cpp" />
+    <ClCompile Include="DreSceneManager.cpp" />
     <ClCompile Include="DreSingleton.cpp" />
     <ClCompile Include="DreStartPoint.cpp" />
     <ClCompile Include="EulerAngles.cpp" />
