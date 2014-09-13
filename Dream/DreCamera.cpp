@@ -68,7 +68,7 @@ namespace dream
 		return mFrustum.GetProjectionMatrix();
 	}
 
-	bool Camera::TestInFrustum(const Vector3& position, int* clipPlanes = nullptr)
+	bool Camera::TestInFrustum(const Vector3& position, int* clipPlanes)
 	{
 		if (mRecaleViewMatrix || mRecaleProjectionMatrix)
 		{
@@ -102,15 +102,15 @@ namespace dream
 		return false;
 	}
 
-	bool Camera::TestInFrustum(const AABB3& boundBox, int* clipPlanes = nullptr)
+	bool Camera::TestInFrustum(const AABB3& boundBox, int* clipPlanes)
 	{
 		bool flag = false;
 
 		// flag = this->TestInFrustum(boundBox.GetMin(), clipPlane) && this->TestInFrustum(boundBox.GetMax(), clipPlane)
 		// ·ÀÖ¹¶ÌÂ·ÇóÖµ
 
-		flag = this->TestInFrustum(boundBox.GetMin(), clipPlane);
-		flag = this->TestInFrustum(boundBox.GetMax(), clipPlane) && flag;
+		flag = this->TestInFrustum(boundBox.GetMin(), clipPlanes);
+		flag = this->TestInFrustum(boundBox.GetMax(), clipPlanes) && flag;
 
 		return flag;
 	}

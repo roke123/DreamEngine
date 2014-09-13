@@ -1,11 +1,11 @@
-#include "DreD3D11HLSLProgram.h"
+#include "DreD3D11Shader.h"
 
 namespace dream
 {
 
 	/** 构造函数
 	*/
-	D3D11HLSLProgram::D3D11HLSLProgram(
+	D3D11Shader::D3D11Shader(
 		ID3D10BlobPtr shaderBuffer,
 		ID3D11VertexShaderPtr vs, ID3D11ShaderReflectionPtr vsReflect,
 		ID3D11DomainShaderPtr ds, ID3D11ShaderReflectionPtr dsReflect,
@@ -25,7 +25,7 @@ namespace dream
 
 	/** 析构函数
 	*/
-	D3D11HLSLProgram::~D3D11HLSLProgram()
+	D3D11Shader::~D3D11Shader()
 	{
 		// 留空
 	}

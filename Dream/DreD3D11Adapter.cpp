@@ -1,5 +1,7 @@
 #include "DreD3D11Adapter.h"
 
+#include "DreMemoryAllocatorConfig.h"
+
 #include <Windows.h>
 
 namespace dream
@@ -14,7 +16,7 @@ namespace dream
 		// ×ª»»¿í×Ö·ûµ½¶à×Ö·û
 		u32 length = WideCharToMultiByte(CP_ACP, 0, mAdapterDesc.Description, wcslen(mAdapterDesc.Description),
 			nullptr, 0, nullptr, nullptr);
-		mDescription = new c8[length+1];
+		mDescription = DREAM_NEW c8[length + 1];
 		WideCharToMultiByte(CP_ACP, 0, mAdapterDesc.Description, wcslen(mAdapterDesc.Description),
 			mDescription, length, nullptr, nullptr);
 		mDescription[length] = '\0';

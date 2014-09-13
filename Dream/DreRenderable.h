@@ -1,16 +1,19 @@
 #ifndef __DRERENDERABLE_H__
 #define __DRERENDERABLE_H__
 
+/// scene manager
 #include "DreSceneManagerDeclaration.h"
-
-#include "DreRenderDeclaration.h"
+#include "DreComponent.h"
 #include "DreEvent.h"
+
+/// render system
+#include "DreRenderDeclaration.h"
 
 namespace dream
 {
 	typedef function<void (RenderSystem& renderSystem, Renderable& object)> RenderEventHandler;
 
-	class Renderable
+	class Renderable : public Component
 	{
 		class RenderEvent final : public Event<RenderEventHandler>
 		{
@@ -28,6 +31,10 @@ namespace dream
 				}
 			}
 		};
+
+	private:
+		
+
 	public:
 		/** 构造函数
 		*/
@@ -44,14 +51,6 @@ namespace dream
 		/** 取得Renderable的碰撞盒
 		*/
 		virtual const AABB3& GetBoundBox() = 0;
-
-		/** 设置Renderable的世界矩阵
-		*/
-		virtual void SetWorldMatrix(const Matrix4& worldMatrix4) = 0;
-
-		/** 取得Renderable的世界矩阵
-		*/
-		virtual Matrix4 GetWorldMatrix() = 0;
 
 		/** 渲染事件发生顺序
 		* 通过OnPrePassRender可以修改渲染顺序

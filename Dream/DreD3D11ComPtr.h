@@ -36,6 +36,21 @@ namespace dream
 			mPtr = rh.mPtr;
 		}
 
+		/// 转移构造函数，直接转移指针
+		D3D11ComPtr(D3D11ComPtr<T>&& rh) 
+		{
+			mPtr = rh.mPtr;
+			rh.mPtr = nullptr;
+		}
+
+		D3D11ComPtr<T>& operator = (D3D11ComPtr<T>&& rh)
+		{
+			mPtr = rh.mPtr;
+			rh.mPtr = nullptr;
+
+			return *this;
+		}
+
 		T* operator-> () { return mPtr; }
 
 		T* Get() { return mPtr; }

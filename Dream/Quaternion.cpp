@@ -45,7 +45,7 @@ namespace dream
 		f32 cosOmega = Dot(q0, q1);
 
 		//两个四元数必须进行标准化为单位四元数，因此其点乘必小于1.0f
-		Assert(Equal(1.0f - cosOmega, 0.0f));
+		Assert(Float::IsEqual(1.0f - cosOmega, 0.0f));
 
 		//如果点乘为负，使用-q1
 		//四元数q和-q代表着相同的旋转，但可能产生不同的slerp运算,我们要选择正确的一个以便用锐角

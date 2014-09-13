@@ -1,72 +1,130 @@
 #ifndef __DRERENDERQUEUE_H__
 #define	__DRERENDERQUEUE_H__
 
-#include <type_traits>
-
 #include "DreSceneManagerDeclaration.h"
-
-#include "DreException.h"
-#include "DreUtility.h"
-
-#include "DreRenderQueueImpl.h"
-
-#include <functional>
 
 namespace dream
 {
-	/** 定义RenderQueue渲染顺序的默认enum量
-    */
-    enum RenderQueueDefualtOrder
-    {
-		/// 定义渲染顺序
-		RENDER_QUEUE_MIN			= -10,
-		RENDER_QUEUE_ORDER_0		= 0,
-		RENDER_QUEUE_ORDER_1		= 10,
-        RENDER_QUEUE_ORDER_2		= 20,
-        RENDER_QUEUE_ORDER_3		= 30,
-        RENDER_QUEUE_ORDER_4		= 40,
-		RENDER_QUEUE_ORDER_5		= 50,
-        RENDER_QUEUE_ORDER_6		= 60,
-        RENDER_QUEUE_ORDER_7		= 70,
-        RENDER_QUEUE_ORDER_8		= 80,
-        RENDER_QUEUE_ORDER_9		= 90,
-		RENDER_QUEUE_ORDER_10		= 100,
-		RENDER_QUEUE_MAX			= 110,
+	
 
-		/// Screen之前的渲染
-		RENDER_QUEUE_ORDER_BEFORE_SCREEN		= RENDER_QUEUE_ORDER_3,
-		/// Screen的渲染
-		RENDER_QUEUE_ORDRE_SCREEN				= RENDER_QUEUE_ORDER_5,
-		/// Screen之后的渲染					
-		RENDER_QUEUE_ORDER_AFTRE_SCREEN			= RENDER_QUEUE_ORDER_7,
-        /// 用于最早的渲染对象，像background
-		RENDER_QUEUE_ORDER_BACKGROUND			= RENDER_QUEUE_ORDER_0,
-        /// First queue (after backgrounds), used for skyboxes if rendered first
-		RENDER_QUEUE_ORDER_SKIES_EARLY			= RENDER_QUEUE_ORDER_1,
-        /// Penultimate queue(before overlays), used for skyboxes if rendered last
-		RENDER_QUEUE_SKIES_LATE					= RENDER_QUEUE_ORDER_9,
-        /// 用于一定在最后渲染的对象
-		RENDER_QUEUE_OVERLAY					= RENDER_QUEUE_ORDER_10, 
-    };
+	enum RENDER_QUEUE_GROUP_ID : u16
+	{
+		/// 背景渲染层
+		RENDER_QUEUE_BACKGROUND = 1000,
+		/// 默认渲染层，没有指定渲染层的 renderable 均属于此渲染层
+		RENDER_QUEUE_DEFALUT = 2000,
+		/// 透明度测试
+		RENDER_QUEUE_ALPHA_TEST = 3000,
+		/// after RENDER_QUEUE_ALPHA_TEST
+		RENDER_QUEUE_GEOMETRY = 4000,
+		/// 透明层，在除了 RENDER_QUEUE_OVERLAY 渲染队列中的对象渲染后渲染
+		RENDER_QUEUE_TRANSPARENT = 5000,
+		/// 覆盖层，在其他所有对象渲染以后在进行渲染，可用于UI
+		RENDER_QUEUE_OVERLAY = 6000,
+	};
 
-	template<class T>
 	class RenderQueue
 	{
 	public:
-		typedef T RenderQueueOrder;
+		typedef map<u16, RenderQueueGroup>				RenderQueueGroupMap;
+		typedef RenderQueueGroupMap::iterator			GourpMapIte;
+		typedef	RenderQueueGroupMap::const_iterator		GroupMapConstIte;
 
-		RenderQueue()
+	protected:
+		RenderQueueGroupMap								mGroups;
+
+	public:
+		/** 虚析构函数 */
+		virtual ~RenderQueue() {}
+
+		/** 清空渲染队列 */
+		void Clear();
+
+		/** 取得渲染队列
+		* @ param
+		*	qid		u16		渲染队列ID
+		*/
+		RenderQueueGroup* GetQueueGroup(u16 qid);
+
+		/** 向渲染队列中添加一个Renderable对象
+		* @param	
+		*	pRend	RenderablePtr	可渲染对象指针
+		* @param
+		*	groupID		u16			渲染组ID，内建ID参考 RENDER_QUEUE_GROUP_ID
+		* @note
+		*	groupID参数可选，默认值为 RENDER_QUEUE_DEFALUT
+		*/
+		void AddRenderable(RenderablePtr pRend, u16 groupID = RENDER_QUEUE_DEFALUT);
+
+		/** 取 GroupMap 初始迭代器，用于遍历RenderQueue */
+		RenderQueue::GourpMapIte begin(void);
+		RenderQueue::GroupMapConstIte begin(void) const;
+
+		/** 取 GroupMap 终止迭代器，用于遍历RenderQueue */
+		RenderQueue::GourpMapIte end(void);
+		RenderQueue::GroupMapConstIte end(void) const;
+
+		/** Sets whether or not the queue will split passes by their lighting type,
+		ie ambient, per-light and decal.
+		*/
+		void setSplitPassesByLightingType(bool split);
+
+		/** Gets whether or not the queue will split passes by their lighting type,
+		ie ambient, per-light and decal.
+		*/
+		bool getSplitPassesByLightingType(void) const;
+
+		/** Sets whether or not the queue will split passes which have shadow receive
+		turned off (in their parent material), which is needed when certain shadow
+		techniques are used.
+		*/
+		void setSplitNoShadowPasses(bool split);
+
+		/** Gets whether or not the queue will split passes which have shadow receive
+		turned off (in their parent material), which is needed when certain shadow
+		techniques are used.
+		*/
+		bool getSplitNoShadowPasses(void) const;
+
+		/** Sets whether or not objects which cast shadows should be treated as
+		never receiving shadows.
+		*/
+		void setShadowCastersCannotBeReceivers(bool ind);
+
+		/** Gets whether or not objects which cast shadows should be treated as
+		never receiving shadows.
+		*/
+		bool getShadowCastersCannotBeReceivers(void) const;
+
+		/** Set a renderable listener on the queue.
+		@remarks
+		There can only be a single renderable listener on the queue, since
+		that listener has complete control over the techniques in use.
+		*/
+		void setRenderableListener(RenderableListener* listener)
 		{
-			pImpl = new RenderQueueImpl<T, std::is_enum<T>::value>();
+			mRenderableListener = listener;
 		}
 
-		~RenderQueue()
+		RenderableListener* getRenderableListener(void) const
 		{
-			SafeDelete(pImpl);
+			return mRenderableListener;
 		}
 
-		RenderQueueImpl<T, std::is_enum<T>::value>* pImpl; 
-	};
+		/** Merge render queue.
+		*/
+		void merge(const RenderQueue* rhs);
+		/** Utility method to perform the standard actions associated with
+		getting a visible object to add itself to the queue. This is
+		a replacement for SceneManager implementations of the associated
+		tasks related to calling MovableObject::_updateRenderQueue.
+		*/
+		void processVisibleObject(MovableObject* mo,
+			Camera* cam,
+			bool onlyShadowCasters,
+			VisibleObjectsBoundsInfo* visibleBounds);
+	};	// end class RenderGroup
+
 }	// end namespace dream
 
 #endif // end __DRERENDERQUEUE_H__

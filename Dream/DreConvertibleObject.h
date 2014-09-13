@@ -9,7 +9,6 @@
 
 namespace dream
 {
-
 	/** 可变换对象，指地图中可受玩家行为发生变化的实体对象，可绑定到一个Node上
 	*/
 	class ConvertibleObject : public std::enable_shared_from_this<ConvertibleObject>

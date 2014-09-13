@@ -42,6 +42,10 @@ namespace dream
 		*/
 		void Remove(Handler* handler);
 
+		/** 清除所有事件处理器
+		*/
+		void Clear();
+
 	private:
 		/** 禁用复制构造函数
 		*/

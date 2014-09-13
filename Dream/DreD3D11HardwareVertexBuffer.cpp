@@ -10,9 +10,9 @@ namespace dream
 		u32 vertexSize, u32 numVertices,
 		DRE_PRIMITIVE_TOPOLOGY vertexType, 
 		DRE_BUFFER_USAGE usage,
-		bool hasInstanceData /* = false */, u32 instanceDataStepRate /* = 0 */) throw() :
+		bool haSinstanceData /* = false */, u32 instanceDataStepRate /* = 0 */) throw() :
 	//------------------------------------------------------------------------------------------------------
-	HardwareVertexBuffer(vertexSize, numVertices, usage, vertexType, hasInstanceData, instanceDataStepRate),
+	HardwareVertexBuffer(vertexSize, numVertices, usage, vertexType, haSinstanceData, instanceDataStepRate),
 		mVertexBuffer(vertexBuffer), 
 		mD3D11Device(d3d11Device)
 	{

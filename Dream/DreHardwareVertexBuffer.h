@@ -34,17 +34,17 @@ namespace dream {
 		/// 实例数据的间隔率，只在mInstanceData为true时有效
 		u32 mInstanceDataStepRate;
 		/// 是否实例数据
-		bool mIsInstanceData;
+		bool mISinstanceData;
 		/// 顶点类型
 		DRE_PRIMITIVE_TOPOLOGY mPrimitiveTopology;
 
 	public:
 		HardwareVertexBuffer(u32 vertexSize, u32 numVertices, DRE_BUFFER_USAGE usage,
-			DRE_PRIMITIVE_TOPOLOGY vertexType, bool hasInstanceData = false, u32 instanceDataStepRate = 0) :
+			DRE_PRIMITIVE_TOPOLOGY vertexType, bool haSinstanceData = false, u32 instanceDataStepRate = 0) :
 		HardwareBuffer(vertexSize * numVertices, usage),
 			mVertexSize(vertexSize), mNumVertices(numVertices),
 			mPrimitiveTopology(vertexType),
-			mIsInstanceData(hasInstanceData), mInstanceDataStepRate(instanceDataStepRate)
+			mISinstanceData(haSinstanceData), mInstanceDataStepRate(instanceDataStepRate)
 		{
 			// 留空
 		}
@@ -99,12 +99,12 @@ namespace dream {
 		u32 GetNumVertices(void) const { return mNumVertices; }
 		/** 返回是否实例数据
 		*/
-		bool GetIsInstanceData() const { return mIsInstanceData; }
+		bool GetISinstanceData() const { return mISinstanceData; }
 		/** 实例数据的间隔率
 		*/
 		u32 GetInstanceDataStepRate() const 
 		{ 
-			DreAssert(!mIsInstanceData, "此顶点缓冲区不是实例数据");
+			DreAssert(!mISinstanceData, "此顶点缓冲区不是实例数据");
 			return mInstanceDataStepRate;
 		}
 		/** 取得顶点类型

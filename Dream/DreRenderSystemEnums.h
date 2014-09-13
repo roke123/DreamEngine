@@ -302,6 +302,46 @@ namespace dream
 										  DRE_MATERIAL_COLOR_SPECULAR | DRE_MATERIAL_COLOR_EMISSIVE,
     };
 
+	/** 光照模式 */
+	enum DRE_LIGHTING_MODE
+	{
+		/// 不进行任何方式的光照
+		DRE_LIGHTING_NONE,
+		/** 直接光照，
+		*	对一个方向光调用像素级光照，
+		*	一定数量的光调用顶点光照，
+		*	剩余光线进行球面调和后进行定点光照
+		*/
+		DRE_LIGHTING_FORWARD_BASE,
+		/** 直接光照，
+		*	对于每一个光都进行一次像素级光照渲染
+		*/
+		DRE_LIGHTING_FORWARD_ADD,
+		/** 延时光照，初始流程，当前不可使用
+		*/
+		DRE_LIGHTING_DEFERREF_BASE,
+		/** 延时光照，最终流程，当前不可使用
+		*/
+		DRE_LIGHTING_DEFERRED_FINAL,
+		/** 对所有光进行顶点光照
+		*/
+		DRE_LIGHTING_VEXTEX,
+		/** 进行光照贴图
+		*/
+		DRE_LIGHTING_LIGHTINGMAP,
+	};
+
+	/** 光线重要性 */
+	enum DRE_LIGHT_IMPORTANCE : u8
+	{
+		/// 在光照渲染时，尽量选择该光线
+		DRE_LIGHT_IMPORTANT,
+		/// 在光照渲染时，按光的距离进行选择
+		DRE_LIGHT_AUTO,
+		/// 在光照渲染时，避免选择该光
+		DRE_LIGHT_UNIMPORTANT,
+	};
+
 //------------------------------------------------- 渲染特性 --------------------------------------------------//
 
 	enum DRE_CAPABILITIES_CATEGORY
@@ -392,7 +432,7 @@ namespace dream
 		/// 支持使用主深度缓冲
 		DRE_CAPABILITIES_RTT_MAIN_DEPTHBUFFER_ATTACHABLE = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 9),
 		/// 支持深度缓冲小于渲染目标
-		DRE_CAPABILITIES_RTT_DEPTHBUFFER_RESOLUTION_LESSEQUAL = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 10),
+		DRE_CAPABILITIES_RTT_DEPTHBUFFER_RESOLUTION_LESSEqual = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 10),
 		/// 支持实例数据的顶点缓冲
 		DRE_CAPABILITIES_VERTEX_BUFFER_INSTANCE_DATA = CAPS_SET_VALUE(DRE_CAPABILITIES_CATEGORY_COMMON_2, 11),
 		/// 支持编译shader缓冲

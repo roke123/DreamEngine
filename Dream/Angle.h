@@ -85,7 +85,7 @@ namespace dream
 		/** 定义Radin到Degree的转换 */
 		explicit Radian(const Degree& rad)
 		{
-			mValue = rad.GetValue() * Math::DEGTORAD_F;
+			mValue = rad.GetValue() * DEGTORAD_F;
 		}
 
 		/** 赋值运算 */
@@ -134,11 +134,11 @@ namespace dream
 		{
 			if(Float::GreaterThanZero(mValue))
 			{
-				mValue = mValue - (int)(mValue / Math::DOUBLE_PI_F) * Math::DOUBLE_PI_F;
+				mValue = mValue - (int)(mValue / DOUBLE_PI_F) * DOUBLE_PI_F;
 			}
 			else
 			{
-				mValue = mValue - ((int)(mValue / Math::DOUBLE_PI_F) + 1) * Math::DOUBLE_PI_F;
+				mValue = mValue - ((int)(mValue / DOUBLE_PI_F) + 1) * DOUBLE_PI_F;
 			}
 		}
 

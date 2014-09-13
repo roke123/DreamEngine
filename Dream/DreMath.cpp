@@ -3,26 +3,10 @@
 
 namespace dream
 {
-	const f32 Math::MAX_F32	= FLT_MAX;
-	const f32 Math::MIN_F32	= -FLT_MAX;
-
-	// PI_F
-	const f32 Math::PI_F					= 3.14159265359f;
-	// PI_F * 2
-	const f32 Math::DOUBLE_PI_F				= 2 * Math::PI_F;
-	// PI_F的倒数.
-	const f32 Math::RECIPROCAL_PI_F			= 1.0f / Math::PI_F;
-	// PI_F / 2
-	const f32 Math::HALF_PI_F				= Math::PI_F / 2.0f;
-	// 从弧度转角度
-	const f32 Math::DEGTORAD_F				= Math::PI_F / 180.0f;
-	// 从角度转弧度
-	const f32 Math::RADTODEG_F				= 180.0f / Math::PI_F;
-
 	Float Float::instance;
 
 	const f32 Float::NaN = _MakeFloat(0x00000000, 0x7F800000, 0x007fffff);
-	const f32 Float::Zero = MakeFloat(0x00000000, 0x00000000, 0x00000000);
+	const f32 Float::Zero = _MakeFloat(0x00000000, 0x00000000, 0x00000000);
 	const f32 Float::PositiveInfinity = _MakeFloat(0x00000000, 0x7F800000, 0x00000000);
 	const f32 Float::NegativeInfinity = _MakeFloat(0x80000000, 0x7F800000, 0x00000000);
 

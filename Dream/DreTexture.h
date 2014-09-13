@@ -64,7 +64,7 @@ namespace dream
 		u32 mWidth, mHeight;
 		/// 转换源图像生成资源后的像素格式
 		DRE_PIXEL_FORMAT mFormat;
-		/// 多重取样次数，Full Sence Anti-aliasing
+		/// 多重取样次数，Full Sence Anti-aliaSing
 		u32 mFSAA;
 		/// 多重采样质量
 		u32 mFSAAQuality;

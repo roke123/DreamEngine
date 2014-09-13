@@ -1,7 +1,13 @@
 #ifndef __DRELIGHT_H__
 #define __DRELIGHT_H__
 
-#include "DreRenderDeclaration.h"
+#include "DreSceneManagerDeclaration.h"
+
+#include "DreComponent.h"
+#include "DreSceneNode.h"
+
+#include "Vector3.h"
+#include "DreColor.h"
 
 namespace dream
 {
@@ -48,7 +54,7 @@ namespace dream
 		E_LIGHTTYPE Type;
 	};
 
-	class Light
+	class Light : public Component
 	{
 	public:
 		/** 构造函数 */
@@ -60,86 +66,54 @@ namespace dream
 		/** 取得光源属性描述 */
 		LightDesc GetLightDesc();
 
-	/// 所有光源公用属性
+		/// 所有光源公用属性
 		/** 取环境光颜色 */
-		Color GetAmbientColor();
-
-		/** 设置环境光颜色 */
-		void SetAmbientColor( Color Color );
+		Color GetAmbientColor() { return mAmbientColor; };
+		void SetAmbientColor(Color color) { mAmbientColor = color; };
 
 		/** 取漫射光颜色 */
-		Color GetDiffuseColor();
-
-		/** 设置漫射光颜色 */
-		void SetDiffuseColor( Color Color );
+		Color GetDiffuseColor() { return mDiffuseColor; };
+		void SetDiffuseColor(Color color) { mDiffuseColor = color;  };
 
 		/** 取放射光颜色 */
-		Color GetSpecularColor();
-
-		/** 设置放射光颜色 */
-		void SetSpecularColor( Color Color );
+		Color GetSpecularColor() { return ; };
+		void SetSpecularColor(Color color) { mSpecularColor = color; };
 
 		/** 取得常量衰减 */
-		f32 GetAttenuationConst();
-
-		/** 设置常量衰减 */
-		void SetAttenuationConst( f32 attenuation );
+		f32 GetAttenuationConst() { return mAttenuationConst; };
+		void SetAttenuationConst(f32 attenuation) { mAttenuationConst = attenuation; };
 
 		/** 取得线性衰减 */
-		f32 GetmAttenuationLinear();
-
-		/** 设置线性衰减 */
-		void SetmAttenuationLinear( f32 attenuation );
+		f32 GetAttenuationLinear() { return mAttenuationLinear; };
+		void SetAttenuationLinear(f32 attenuation) { mAttenuationLinear = attenuation; };
 
 		/** 取得二次衰减 */
-		f32 GetAttenuationQuad();
-
-		/** 设置二次衰减 */
-		void SetAttenuationQuad( f32 attenuation );
+		f32 GetAttenuationQuad() { return mAttenuationQuad; };
+		void SetAttenuationQuad(f32 attenuation) { mAttenuationQuad = attenuation; };
 
 		/** 取得光照范围半径 */
-		f32 GetLightRadius();
-
-		/** 设置光照范围半径 */
-		void SetLightRadius( f32 radius );
+		f32 GetLightRadius() { return mRadius; };
+		void SetLightRadius(f32 radius) { mRadius = radius; };
 
 		/** 取得光线类型 */
-		E_LIGHTTYPE GetLightType();
+		E_LIGHTTYPE GetLightType() { return mType; };
 
 	/// 专用于聚光灯光源，非聚光灯光源使用会触发断言
 		/** 取得聚光灯外角 */
-		f32 GetOuterCone();
-
-		/** 设置聚光灯外角 */
-		void SetOuterCone( f32 outerCone );
+		f32 GetOuterCone() { return mOuterCone; };
+		void SetOuterCone(f32 outerCone) { mOuterCone = outerCone; };
 
 		/** 取得聚光灯内角 */
-		f32 GetInnerCone();
-
-		/** 设置聚光灯内角 */
-		void SetInnerCone( f32 innerCone );
+		f32 GetInnerCone() { return mInnerCone; };
+		void SetInnerCone(f32 innerCone) { mInnerCone = innerCone; };
 
 		/** 取得聚光灯的光强下降幅度 */
-		f32 GetFalloff();
-
-		/** 设置聚光灯的光强下降幅度 */
-		void SetFalloff( f32 falloff );
-
-	/// 专用于点光源，非点光源使用会触发断言
-		/** 取得光源位置 */
-		Vector3 GetPosition();
-
-		/** 设置光源位置 */
-		void GetPosition( Vector3 position );
-
-	/// 专用于平行光源，非平行光源使用会触发断言
-		/** 取得光源方向 */
-		Vector3 GetDirection();
-
-		/** 设置光源方向 */
-		void GetDirection( Vector3 direction );
+		f32 GetFalloff() { return mFalloff; };
+		void SetFalloff(f32 falloff) { mFalloff = falloff; };
 
 	private:
+		/// 
+
 		/// 环境光颜色
 		Color mAmbientColor;		
 	

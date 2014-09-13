@@ -18,6 +18,11 @@ namespace dream
 	class SceneNode;
 	typedef shared_ptr<SceneNode>						SceneNodePtr;
 
+	class Component;
+	typedef shared_ptr<Component>						ComponentPtr;
+	typedef map<u16, Component>							ComponentMap;
+	typedef ComponentMap::iterator						ComponentMapIte;
+
 	class SceneRootNode;
 	typedef	shared_ptr<SceneRootNode>					SceneRootNodePtr;
 	
@@ -37,8 +42,8 @@ namespace dream
 	typedef AttributionMap::const_iterator				AttributionMapConstIte;
 
 	class ConvertibleObject;
-	class ConvertibleObjectNameCmp;
 	typedef shared_ptr<ConvertibleObject>				ConvertibleObjectPtr;
+
 
 	class Camera;
 	typedef shared_ptr<Camera>							CameraPtr;
@@ -46,12 +51,29 @@ namespace dream
 	class DefaultCamera;
 	typedef shared_ptr<DefaultCamera>					DefaultCameraPtr;
 
-	enum RenderQueueDefualtOrder;
+	class Renderable;
+	typedef shared_ptr<Renderable>						RenderablePtr;
+	typedef vector<RenderablePtr>						RenderableList;
 
-	template<class T>
 	class RenderQueue;
+	typedef shared_ptr<RenderQueue>						RenderQueuePtr;
 
-	class RenderGroup;
+	class RenderQueueGroup;
+	typedef shared_ptr<RenderQueueGroup>				RenderQueueGroupPtr;
+
+	class RenderLayerGroup;
+	typedef shared_ptr<RenderLayerGroup>				RenderLayerGroupPtr;
+
+	class QueuedRenderableCollection;
+	typedef shared_ptr<QueuedRenderableCollection>		QeuueRenderableCollectionPtr;
+
+	class QueuedRenderableVisitor;
+
+	typedef u16											TagID;
+	typedef u16											LayerID;
+
+	/*template<class T>
+	class RenderQueue;
 
 	template<
 		typename T = RenderQueueDefualtOrder
@@ -61,9 +83,9 @@ namespace dream
 	public:
 		typedef	T							RenderQueueOrder;
 		typedef RenderQueue<T>				RenderQueue;
-	};
+	};*/
 
-	typedef ScreenManagerStaticConfig<>		SMSC;
+	//typedef ScreenManagerStaticConfig<>		SMSC;
 
 }	// end namesapce dream
 

@@ -3,6 +3,8 @@
 #include "DreD3D11RenderMapping.h"
 #include "DreNormalImage.h"
 
+#include "DreMemoryAllocatorConfig.h"
+
 namespace dream
 {
 
@@ -48,7 +50,7 @@ namespace dream
 				"D3D11Texture::ExportAsImage");
 		}
 		
-		return ImagePtr(new NormalImage(imageData, desc.Width, desc.Height,
+		return ImagePtr(DREAM_NEW NormalImage(imageData, desc.Width, desc.Height,
 			imageFormat));
 	}
 

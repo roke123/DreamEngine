@@ -30,7 +30,7 @@ namespace dream
 		* @param		fov				视角，默认值为90°
 		*/
 		DefaultCamera(const string& name, const Vector3& position, const Vector3& orientation, const Vector3 upVector,
-			f32 aspect = DEFAULT_ASPECT, f32 near = DEFALUT_NEAR_DIST, f32 far = DEFALUT_FAR_DIST, f32 fov = HALF_PI_F);
+			Radian fov, f32 aspect = DEFAULT_ASPECT, f32 near = DEFALUT_NEAR_DIST, f32 far = DEFALUT_FAR_DIST);
 
 		/** 更新相机属性
 		* @note			override by class Camera

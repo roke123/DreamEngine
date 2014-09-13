@@ -9,8 +9,15 @@
 #include "AABB3.h"
 #include "DreEvent.h"
 
+#include "DreConvertibleObject.h"
+
 namespace dream
 {
+	enum SCENE_NODE_TAG
+	{
+		SCENE_NODE_TAG_NONE,
+		SCENE_NODE_TAG_
+	};
 
 	class SceneNode : public Node, public std::enable_shared_from_this<SceneNode>
 	{
@@ -104,12 +111,13 @@ namespace dream
 		}; // end class ChildNodeEvent
 
 	public:
-		/** 私有构造函数，用于构造一个只有名字的SceneNode */
-		explicit SceneNode(const string& name);
 	
 		/** 构造函数 */
-		explicit SceneNode(const Vector3& initialPosition, const Vector3& initialScale,
-			const Quaternion& initialOrientation);
+		explicit SceneNode(
+			const string& name, u16 tagID, u16 layerID,
+			const Vector3& initialPosition = Vector3::ZeroVector, 
+			const Vector3& initialScale = Vector3::ZeroVector,
+			const Quaternion& initialOrientation = Quaternion::UnitQuaternion);
 
 		/** 相对于当前位置平移一段距离
 		* @param	x		在X轴方向的平移距离
@@ -126,15 +134,15 @@ namespace dream
 		* @param	y		在Y轴方向的放大倍数
 		* @param	z		在Z轴方向的放大倍数
 		*/
-		void SetAbsoluteScale(f32 x, f32 y, f32 z) { _NeedUpdate(); mLocalScale = Vector3(x, y, z); }
-		void SetAbsoluteScale(const Vector3& scale) { _NeedUpdate(); mLocalScale = scale; }
+		void SetLocalScale(f32 x, f32 y, f32 z) { _NeedUpdate(); mLocalScale = Vector3(x, y, z); }
+		void SetLocalScale(const Vector3& scale) { _NeedUpdate(); mLocalScale = scale; }
 		/** 取得相对于当前模型大小的放大倍数 */
-		Vector3 GetAbsolutionScale() const { return mLocalScale; }
+		Vector3 GetLocalScale() const { return mLocalScale; }
 
 		/** 相对于当前模型方向的旋转方向 */
-		void SetAbsoluteRotation(const Quaternion& orientation) { _NeedUpdate(); mLocalOrientation = orientation; }
+		void SetLocalRotation(const Quaternion& orientation) { _NeedUpdate(); mLocalOrientation = orientation; }
 		/** 取得相对于当前模型方向的旋转方向 */
-		Quaternion GetAbsolutionRotation() const { return mLocalOrientation; }
+		Quaternion GetLocalRotation() const { return mLocalOrientation; }
 
 		/** 相对于父节点平移一段距离
 		* @param	x		在X轴方向的平移距离
@@ -164,30 +172,40 @@ namespace dream
 		/** 取得最终坐标
 		* @note override by Node
 		*/
-		Vector3 _GetFinalPosition() const override { return mFinalPosition; };
+		virtual Vector3 _GetFinalPosition() const { return mFinalPosition; };
 		/** 取得最终方向
 		* @note override by Node
 		*/
-		Quaternion _GetFinalOrientation() const override { return mFinalOrientation; };
+		virtual Quaternion _GetFinalOrientation() const override { return mFinalOrientation; };
 		/** 取得最终Scale
 		* @note override by Node
 		*/
-		Vector3 _GetFinalScale() const override { return mFinalScale; };
+		virtual Vector3 _GetFinalScale() const override { return mFinalScale; };
 
-		/** 获取转换矩阵
+		/** 渲染前更新节点，计算当前节点属性
 		* @note override by Node
 		*/
-		Matrix4 GetWorldMatrix() const override;
+		virtual void _PreRenderUpdate() override;
 
-		/** 更新节点，计算当前节点属性
+		/** 渲染后更新节点，计算当前节点属性
 		* @note override by Node
 		*/
-		void _Update() override;
+		virtual void _PostRenderUpdate() override;
+
+		/** 逻辑更新节点
+		* @note override by Node
+		*/
+		virtual void _FixedUpdate() override;
+
+	private:
+		void _TransformUpdate();
+
+	public:
 
 		/** 取得碰撞盒
 		* @note override by Node
 		*/
-		AABB3 GetBoundBox() const override { return mBoundsBox; }
+		virtual AABB3 GetBoundBox() const override { return AABB3::EmptyAABB3; }
 
 		/** 通知父节点绑定了一个实体
 		* @note override by Node
@@ -197,7 +215,7 @@ namespace dream
 		/** 查找可见元素
 		* @note override by Node
 		*/
-		void _FindVisibleObject(const CameraPtr& camera) override = 0;
+		void _FindVisibleObject(const CameraPtr& camera) override {};
 		
 		/** 绑定一个子节点
 		* @param	name		子节点名
@@ -214,20 +232,12 @@ namespace dream
 		SceneNodePtr FindSubNodeByName(const string& name);
 		
 		/** 设置该节点是否可见 */
-		void SetVisiable(bool enable = true) { mIsVisiable = enable; }
+		void SetEnable(bool enable = true) { mIsEnable = enable; }
 		/** 判断该节点是否可见 */
-		bool IsVisible() const { return mIsVisiable; }
+		bool IsEnable() const { return mIsEnable; }
 
-		/** 获取父节点指针 */
-		NodePtr GetParent() const { return mParentNode; };
-
-		/** 绑定一个ConvertibleObject
-		*/
-		void AttachConvertibleObject(ConvertibleObjectPtr& object);
-
-		/** 解绑定一个ConvertibleObject
-		*/
-		void DetachConvertibleObject(const string& name);
+		/** 获取父节点指针,直接绑定在根节点下的节点会返回nullptr */
+		SceneNodePtr GetParent() const;
 
 		/** 获取节点名 */
 		string GetNodeName() const { return mNodeName; }
@@ -239,11 +249,18 @@ namespace dream
 		void _SetParent(const NodePtr& parent) { _NeedUpdate(); mParentNode = parent; }
 		
 		/** 标志节点需要更新 */
-		void _NeedUpdate() { mIsUpdated = false; mRecaleWorldMatrix = true; };
+		void _NeedUpdate() { mRecaleWorldMatrix = true; mTransformUpdated = false; };
 
-	protected:
-		/** 更新碰撞盒 */
-		void _UpdateBoundBox();
+		/** 计算世界矩阵 */
+		Matrix4 SceneNode::GetWorldMatrix() const;
+
+		/** 取得当前节点标签ID */
+		TagID GetTagID() { return mTagID; }
+		void SetTagID(TagID id) { mTagID = id;  }
+
+		/** 取得当前节点层ID */
+		LayerID GetLayerID() { return mLayerID; }
+		void SetLayerID(LayerID id) { mLayerID = id; }
 
 	private:
 		
@@ -269,21 +286,14 @@ namespace dream
 		Quaternion				mRelativeOrientation;
 
 		/// 节点名
-		string				mNodeName;
+		string					mNodeName;
 
-		/// 表示该节点是否可显示的标志
-		bool				mIsVisiable;
+		/// 表示该节点是否可用
+		bool					mIsEnable;
 		/// 本节点属性已更新
-		bool				mIsUpdated;
+		bool					mTransformUpdated;
 		/// 节点下的子节点已更新
-		bool				mIsChildrenUpdated;
-		///	是否重新计算世界变换矩阵
-		mutable bool		mRecaleWorldMatrix;
-
-		/// 碰撞盒
-		AABB3				mBoundsBox;
-		/// 世界变换矩阵
-		mutable Matrix4		mWorldMatrix;
+		bool					mChildrenTransformUpdated;
 
 		typedef set<SceneNodePtr, SceneNodeNameCmp>			SceneNodeSet;
 		typedef SceneNodeSet::iterator					SceneNodeSetIte;
@@ -293,11 +303,19 @@ namespace dream
 		/// 父节点
 		NodePtr					mParentNode;
 
-		typedef set<ConvertibleObjectPtr, ConvertibleObjectNameCmp>		ConvertibleObjectSet;
-		typedef ConvertibleObjectSet::iterator							ConvertibleObjectSetIte;
-		typedef ConvertibleObjectSet::const_iterator					ConvertibleObjectSetConstIte;
-		/// 绑定对象集
-		ConvertibleObjectSet	mObjectSet;
+		/// 是否需要重新计算世界矩阵
+		mutable bool			mRecaleWorldMatrix;
+		/// 世界矩阵
+		mutable Matrix4			mWorldMatrix;
+
+		/// 组件集
+		ComponentMap			mComponentMap;
+
+		/// 节点标签ID
+		u16						mTagID;
+
+		/// 节点层ID
+		u16						mLayerID;
 
 	public:
 		/// 绑定实体事件
@@ -312,6 +330,7 @@ namespace dream
 		ChildSceneNodeEvent		OnAttachChildNode;
 		/// 节点解绑定子节点事件
 		ChildSceneNodeEvent		OnDetachChildNode;
+
 	};	// end class SceneNode
 
 }	// end namespace dream

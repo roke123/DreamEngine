@@ -27,13 +27,21 @@ namespace dream
 		/** 通知父节点绑定了一个实体 */
 		virtual void _NotifyChanged() = 0;
 
-		/** 更新节点，计算当前节点属性 */
-		virtual void _Update() = 0;
+		/** 渲染流程前更新节点，计算当前节点属性 */
+		virtual void _PreRenderUpdate() = 0;
+
+		/** 渲染流程后更新节点，计算当前节点属性 */
+		virtual void _PostRenderUpdate() = 0;
+
+		/** 逻辑更新节点 */
+		virtual void _FixedUpdate() = 0;
 
 		/** 取得碰撞盒 */
 		virtual AABB3 GetBoundBox() const = 0;
 
-		/** 查找可见元素 */
+		/** 查找可见元素
+		* @param
+		*/
 		virtual void _FindVisibleObject(const CameraPtr& camera) = 0;
 
 	};	// end class Node

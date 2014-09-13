@@ -60,7 +60,7 @@ namespace dream
 		//÷ÿ‘ÿoperator ==
 		inline bool operator == ( const Vector3& a ) const
 		{
-			return Equal( mX, a.mX) && Equal( mY, a.mY ) && Equal( mZ, a.mZ );
+			return Float::IsEqual( mX, a.mX) && Float::IsEqual( mY, a.mY ) && Float::IsEqual( mZ, a.mZ );
 		}
 
 		//÷ÿ‘ÿoperator !=

@@ -183,7 +183,7 @@ namespace dream
 	void PixelUtil::ApplyGamma(u8Array& source, DRE_PIXEL_FORMAT srcFormat, u32 srcSize,
 		f32 gamma)
 	{
-		if(Equal(gamma, 1.0f))
+		if(Float::IsEqual(gamma, 1.0f))
 			return;
 
 		// stride = bpp / 8，每像素的字节数

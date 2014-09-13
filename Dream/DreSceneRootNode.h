@@ -12,7 +12,7 @@
 namespace dream
 {
 
-	class SceneRootNode : public Node, public std::enable_shared_from_this<SceneRootNode>
+	class SceneRootNode : public Node
 	{
 	public:
 		/** ¹¹Ôìº¯Êý */

@@ -62,8 +62,8 @@ namespace dream
 	typedef D3D11ComPtr<ID3D11GeometryShader>		ID3D11GeometryShaderPtr;
 	typedef D3D11ComPtr<ID3D11ShaderReflection>		ID3D11ShaderReflectionPtr;
 	typedef D3D11ComPtr<ID3D11SamplerState>			ID3D11SamplerStatePtr;
-	typedef map<string, ID3D11SamplerStatePtr>		D3D11SamplerMap;
 	typedef D3D11ComPtr<ID3D11InputLayout>			ID3D11InputLayoutPtr;
+	typedef map<string, ID3D11BufferPtr>			ID3D11BufferPtrMap;
 	
 	class D3D11RenderSystem;
 	typedef shared_ptr<D3D11RenderSystem>			D3D11RenderSystemPtr;
@@ -79,8 +79,15 @@ namespace dream
 	typedef shared_ptr<D3D11RenderTarget>			D3D11RenderTargetPtr;
 	typedef list<D3D11RenderTarget>					D3D11RenderTargetList;
 
-	class D3D11HLSLProgram;
-	typedef shared_ptr<D3D11HLSLProgram>			D3D11HLSLProgramPtr;
+	class D3D11Shader;
+	typedef shared_ptr<D3D11Shader>					D3D11ShaderPtr;
+
+	class D3D11Sampler;
+	typedef shared_ptr<D3D11Sampler>				D3D11SamplerPtr;
+	typedef map<string, D3D11SamplerPtr>			D3D11SamplerPtrMap;
+
+	class D3D11Material;
+	typedef shared_ptr<D3D11Material>				D3D11MaterialPtr;
 
 	class D3D11HardwareVertexBuffer;
 	typedef shared_ptr<D3D11HardwareVertexBuffer>	D3D11HardwareVertexBufferPtr;

@@ -32,7 +32,22 @@
 #define C99				0		// define this if you want to use C99 stuff (although you need to fix other C++ code below, like iostreams)
 #define _SIGNED_SHIFT	1		// define this if bitshift of signed ints preserves sign - implementation defined
 
-#include <stdio.h>	//必须的头文件
+/// 开启调试宏
+#define DREAM_DEBUG		0
+#if defined(DEBUG) || defined(_DEBUG)
+	#define DREAM_DEBUG		1
+#endif
+
+// 禁用警告
+#if defined(_MSC_VER)
+	#pragma warning(disable:4507)
+	#if _MSC_VER > 1700
+		#pragma warning(disable:4005)
+	#endif
+#endif
+
+
+#include <cstdio>	//必须的头文件
 
 #endif // __IRR_COMPILE_CONFIG_H__
 

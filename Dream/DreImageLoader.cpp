@@ -130,7 +130,7 @@ namespace dream
 	{
 		if(sImageLoaderMap.find(ext) == sImageLoaderMap.end())
 		{
-			sImageLoaderMap.insert(stlport::make_pair(ext, loader));
+			sImageLoaderMap.insert(make_pair(ext, loader));
 			return true;
 		}
 

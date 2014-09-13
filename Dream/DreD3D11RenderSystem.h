@@ -24,14 +24,6 @@ namespace dream
 	private:
 		/// 输入顶点元素的描述数组
 		unique_ptr<D3D11_INPUT_ELEMENT_DESC[]> mInputLayout;
-		/// 采样器映射组
-		D3D11SamplerMap				mSamplerMap;
-		/// D3D11纹理映射组
-		D3D11TexturePtrMap			mTextureMap;
-		/// D3D11纹理数组
-		D3D11TexturePtr				mTextureArray[D3D11_MAX_TEXTURE_NUM];
-		/// 采样器数组
-		ID3D11SamplerStatePtr		mSamplerArray[D3D11_MAX_SAMPLER_NUM];
 
 		/// D3D11设备
 		ID3D11DevicePtr				mD3D11Device;
@@ -48,8 +40,8 @@ namespace dream
 		D3D11RenderTargetPtr		mRenderTargetList[D3D11_MAX_RENDER_TARGET_NUM];
 		/// 绑定的RenderWindow列表
 		D3D11RenderWindowPtr		mRenderWindowList[D3D11_MAX_RENDER_WINDOW_NUM];
-		/// 当前绑定的HLSL渲染
-		D3D11HLSLProgramPtr			mCurrentHLSLProgram;
+		/// 当前绑定的材质
+		D3D11MaterialPtr			mCurrentMaterial;
 
 		D3D11RenderState			mRenderState;
 		D3D11RenderState			mSavedRenderState;
@@ -68,8 +60,8 @@ namespace dream
 		bool						mIsBlendStateChange;
 		bool						mIsDepthStencilStateChange;
 		bool						mIsVertexBufferChange;
-		bool						mIsIndexBufferChange;
-		bool						mIsHLSLProgramChange;
+		bool						mISindexBufferChange;
+		bool						mIsMaterialChange;
 
 	public:
 		/** 默认构造函数.
@@ -308,7 +300,7 @@ namespace dream
 
 		/** 设置HLSL渲染
 		*/
-		void SetHLSLShader(HLSLProgramPtr& hlslShader) override;
+		void SetMaterial(MaterialPtr& material) override;
 
 	#pragma endregion
 
@@ -411,36 +403,10 @@ namespace dream
 	#pragma endregion
 
 	#pragma region SamplerState
-
-		/** 设置一个寄存器号为index的sampler
-		* @param	index		分配的寄存器索引
-		* @param	sampler		采样器
-		*/
-		void SetSampler(u32 index, const SamplerDesc& sampler) override;
-
-		/** 设置一个语义为sematics的sampler
-		* @param	index		hlsl语义
-		* @param	sampler		采样器
-		*/
-		void SetSampler(const c8* sematics, const SamplerDesc& sampler) override;
-
-	private:
+	public:
 		/** 通过SamplerDesc创建ID3D11Sampler
 		*/
 		ID3D11SamplerStatePtr CreateSampler(const SamplerDesc& sampler);
-
-	public:
-		/** 设置一个寄存器号为index的texture
-		* @param	index		分配的寄存器索引
-		* @param	texture		纹理
-		*/
-		void SetTexture(u32 texIndex, TexturePtr& texture) override;
-
-		/** 设置一个语义为sematics的texture
-		* @param	index		hlsl语义
-		* @param	texture		纹理
-		*/
-		void SetTexture(const c8* sematics, TexturePtr& texture) override;
 
 	#pragma endregion
 
@@ -510,13 +476,13 @@ namespace dream
 		*/
 		HardwareVertexBufferPtr CreateHardwareVertexBuffer(ReadBufferPtr readBuffer, u32 vertexSize, u32 numVertices,
 			DRE_PRIMITIVE_TOPOLOGY primitive,
-			DRE_BUFFER_USAGE usage, bool hasInstanceData = false, u32 instanceDataStepRate = 0) override;
+			DRE_BUFFER_USAGE usage, bool haSinstanceData = false, u32 instanceDataStepRate = 0) override;
 
 		/** CreateHardwareVertexBuffer的具体实现
 		*/
 		HardwareVertexBufferPtr CreateHardwareVertexBuffer(const u8Array data, u32 vertexSize, u32 numVertices,
 			DRE_PRIMITIVE_TOPOLOGY primitive,
-			DRE_BUFFER_USAGE usage, bool hasInstanceData = false, u32 instanceDataStepRate = 0);
+			DRE_BUFFER_USAGE usage, bool haSinstanceData = false, u32 instanceDataStepRate = 0);
 
 		/** 从readBuffer中读取数据来生成HardwareIndexBuffer
 		* @param		readBuffer			可读取缓冲区
@@ -532,11 +498,11 @@ namespace dream
 
 		/** 从读取流中加载HLSLProgram
 		*/
-		HLSLProgramPtr CreateHLSLProgram(ReadBufferPtr readBuffer, const DRE_HLSLPROGRAM_DESC &desc) override;
+		ShaderPtr CreateShader(ReadBufferPtr readBuffer, const DRE_SHADER_DESC &desc) override;
 
 		/** 从文件中加载HLSLProgram
 		*/
-		HLSLProgramPtr CreateHLSLProgram(const DRE_HLSLPROGRAM_DESC& desc) override;
+		ShaderPtr CreateShader(const DRE_SHADER_DESC& desc) override;
 
 	private:
 		ID3D10BlobPtr CreateShaderFromFile(const c8* shaderFile, const c8* shaderName, 

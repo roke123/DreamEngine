@@ -18,7 +18,7 @@ namespace dream
 			u32 vertexSize, u32 numVertices,
 			DRE_PRIMITIVE_TOPOLOGY vertexType, 
 			DRE_BUFFER_USAGE usage,
-			bool hasInstanceData = false, u32 instanceDataStepRate = 0) throw();
+			bool haSinstanceData = false, u32 instanceDataStepRate = 0) throw();
 	public:
 		/** ÐéÎö¹¹º¯Êý
 		*/

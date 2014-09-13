@@ -8,6 +8,8 @@
 #include "DreBaseMemoryReadBuffer.h"
 #include "DreBaseMemoryWriteBuffer.h"
 
+#include "DreMemoryAllocatorConfig.h"
+
 #include <boost\filesystem.hpp>
 using namespace boost;
 
@@ -29,7 +31,7 @@ namespace dream
 		u32 fileLength = (u32)filesystem::file_size(file);
 		
 		// 打开文件
-		ifstreamPtr fileStream(new std::ifstream);
+		ifstreamPtr fileStream(DREAM_NEW std::ifstream);
 		fileStream->open(file, std::ios::out);
 		if (!fileStream->is_open())
 		{
@@ -40,7 +42,7 @@ namespace dream
 			DRE_EXCEPT(DRE_EXCEPTION_IO, desc, "打开文件失败");
 		}
 
-		return ReadBufferPtr(new FileReadBuffer(fileStream, fileLength));
+		return ReadBufferPtr(DREAM_NEW FileReadBuffer(fileStream, fileLength));
 	}
 
 	ReadBufferPtr DataBufferFactory::CreateFileReadBuffer(const string& file)
@@ -55,7 +57,7 @@ namespace dream
 		u32 fileSize = 0;
 		bool isFileExist = false;
 
-		// 检查文件是否存在
+		// 检查文件是否存
 		if(filesystem::exists(file))
 		{
 			isFileExist = true;
@@ -96,7 +98,7 @@ namespace dream
 		}
 
 		// 打开文件
-		ofstreamPtr fileStream(new std::ofstream(file));
+		ofstreamPtr fileStream(DREAM_NEW std::ofstream(file));
 		if (fileStream->fail())
 		{
 			string desc = "打开文件";
@@ -106,7 +108,7 @@ namespace dream
 			DRE_EXCEPT(DRE_EXCEPTION_IO, desc, "打开文件失败");
 		}
 
-		return WriteBufferPtr(new FileWriteBuffer(fileStream, fileSize));
+		return WriteBufferPtr(DREAM_NEW FileWriteBuffer(fileStream, fileSize));
 	}
 
 	WriteBufferPtr DataBufferFactory::CreateFileWriteBuffer(const string& file, DRE_WRITE_FILE_OPTION option)
@@ -116,21 +118,21 @@ namespace dream
 
 	ReadBufferPtr DataBufferFactory::CreateMemoryReadBuffer(u8Array buffer, u32 size)
 	{
-		return ReadBufferPtr(new MemoryReadBuffer(buffer, size));
+		return ReadBufferPtr(DREAM_NEW MemoryReadBuffer(buffer, size));
 	}
 
 	WriteBufferPtr DataBufferFactory::CreateMemoryWriteBuffer(u8Array buffer, u32 size)
 	{
-		return WriteBufferPtr(new MemoryWriteBuffer(buffer, size));
+		return WriteBufferPtr(DREAM_NEW MemoryWriteBuffer(buffer, size));
 	}
 
 	ReadBufferPtr DataBufferFactory::CreateBaseMemoryReadBuffer(void* buffer, u32 size)
 	{
-		return ReadBufferPtr(new BaseMemoryReadBuffer(buffer, size));
+		return ReadBufferPtr(DREAM_NEW BaseMemoryReadBuffer(buffer, size));
 	}
 
 	WriteBufferPtr DataBufferFactory::CreateBaseMemoryWriteBuffer(void* buffer, u32 size)
 	{
-		return WriteBufferPtr(new BaseMemoryWriteBuffer(buffer, size));
+		return WriteBufferPtr(DREAM_NEW BaseMemoryWriteBuffer(buffer, size));
 	}
 }

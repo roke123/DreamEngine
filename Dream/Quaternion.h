@@ -28,10 +28,10 @@ namespace dream
 	//±ê×¼²Ù×÷
 		bool operator == (const Quaternion& a) const
 		{
-			return Equal(mX, a.mX) &&
-				Equal(mY, a.mY) &&
-				Equal(mZ, a.mZ) &&
-				Equal(mW, a.mW);
+			return Float::IsEqual(mX, a.mX) &&
+				Float::IsEqual(mY, a.mY) &&
+				Float::IsEqual(mZ, a.mZ) &&
+				Float::IsEqual(mW, a.mW);
 		}
 			
 		bool operator != (const Quaternion& a) const

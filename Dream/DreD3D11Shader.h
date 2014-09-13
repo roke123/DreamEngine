@@ -3,18 +3,18 @@
 
 #include "DreD3D11RenderDeclaration.h"
 
-#include "DreHLSLProgram.h"
+#include "DreShader.h"
 
 namespace dream
 {
 
-	class D3D11HLSLProgram : public HLSLProgram
+	class D3D11Shader : public Shader
 	{
 		friend class D3D11RenderSystem;
 	private:
 		/** 构造函数
 		*/
-		D3D11HLSLProgram(
+		D3D11Shader(
 			ID3D10BlobPtr shaderBuffer,
 			ID3D11VertexShaderPtr vs,	ID3D11ShaderReflectionPtr vsReflect,
 			ID3D11DomainShaderPtr ds,	ID3D11ShaderReflectionPtr dsReflect,
@@ -25,7 +25,7 @@ namespace dream
 	public:
 		/** 析构函数
 		*/
-		~D3D11HLSLProgram() override;
+		~D3D11Shader() override;
 
 		D3D11ComPtr<ID3D10Blob>	GetShaderBlob()		
 		{ 

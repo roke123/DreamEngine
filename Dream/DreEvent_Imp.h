@@ -49,4 +49,10 @@ void Event<Handler>::Remove (Handler* handler)
 }
 
 template<class Handler>
+void Event<Handler>::Clear()
+{
+	mHandlerList.Clear();
+}
+
+template<class Handler>
 string Event<Handler>::GetEventName() { return mEventName; }

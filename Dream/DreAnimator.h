@@ -11,7 +11,7 @@ namespace dream
 	{
 	public:
 		/** 构造函数 */
-		KeyFrame(f32 timePoint) : mTimePoint(timePoint), mIsInvalid(false)
+		KeyFrame(f32 timePoint) : mTimePoint(timePoint), mISinvalid(false)
 		{
 			// 留空
 		}
@@ -20,17 +20,17 @@ namespace dream
 		virtual ~KeyFrame() {};
 
 		/** 通知当前帧已被销毁 */
-		void NotifyDispose() { mIsInvalid = true; }
+		void NotifyDispose() { mISinvalid = true; }
 
 		/** 返回关键帧的时间点 */
 		f32 GetTimePoint() const { return mTimePoint; }
 
 		/** 返回是否无效帧 */
-		bool IsInvalidFrame() const { return mIsInvalid; }
+		bool ISinvalidFrame() const { return mISinvalid; }
 
 	private:
 		/// 当前帧是否无效帧
-		bool mIsInvalid;
+		bool mISinvalid;
 		/// 在动画器中的时间点
 		f32 mTimePoint;
 	};	// end class KeyFrame

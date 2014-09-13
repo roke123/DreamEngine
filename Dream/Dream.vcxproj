@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -15,6 +15,7 @@
     <ClInclude Include="Angle.h" />
     <ClInclude Include="DreAttribution.h" />
     <ClInclude Include="DreCamera.h" />
+    <ClInclude Include="DreComponent.h" />
     <ClInclude Include="DreConvertibleObject.h" />
     <ClInclude Include="DreAnimator.h" />
     <ClInclude Include="DreBaseMemoryReadBuffer.h" />
@@ -22,7 +23,9 @@
     <ClInclude Include="DreD3D11ComPtr.h" />
     <ClInclude Include="DreD3D11HardwareIndexBuffer.h" />
     <ClInclude Include="DreD3D11HardwareVertexBuffer.h" />
-    <ClInclude Include="DreD3D11HLSLProgram.h" />
+    <ClInclude Include="DreD3D11Material.h" />
+    <ClInclude Include="DreD3D11Sampler.h" />
+    <ClInclude Include="DreD3D11Shader.h" />
     <ClInclude Include="DreD3D11RenderMapping.h" />
     <ClInclude Include="DreAdapter.h" />
     <ClInclude Include="DreColor.h" />
@@ -40,13 +43,20 @@
     <ClInclude Include="DreDataBufferEnums.h" />
     <ClInclude Include="DreDataBufferFactory.h" />
     <ClInclude Include="DreFileWriteBuffer.h" />
-    <ClInclude Include="DreFloatImpl.h" />
     <ClInclude Include="DreFreeImageLoader.h" />
+    <ClInclude Include="DreGpuProgram.h" />
     <ClInclude Include="DreHardwareIndexBuffer.h" />
-    <ClInclude Include="DreHLSLProgram.h" />
+    <ClInclude Include="DreMemoryAllocatorBaseObject.h" />
+    <ClInclude Include="DreMemoryAllocatorConfig.h" />
+    <ClInclude Include="DreMemoryStdAlloc.h" />
+    <ClInclude Include="DreMesh.h" />
+    <ClInclude Include="DreNode.h" />
+    <ClInclude Include="DrePass.h" />
+    <ClInclude Include="DreShader.h" />
     <ClInclude Include="DreImage.h" />
     <ClInclude Include="DreImageLoader.h" />
     <ClInclude Include="DreIOSystemDeclaration.h" />
+    <ClInclude Include="DreMaterial.h" />
     <ClInclude Include="DreMathDeclaration.h" />
     <ClInclude Include="DreMemoryReadBuffer.h" />
     <ClInclude Include="DreNormalImage.h" />
@@ -55,9 +65,10 @@
     <ClInclude Include="DreReadBuffer.h" />
     <ClInclude Include="DreRenderable.h" />
     <ClInclude Include="DreRenderDeclaration.h" />
-    <ClInclude Include="DreRenderGroup.h" />
-    <ClInclude Include="DreRenderQueue.h" />
-    <ClInclude Include="DreRenderQueueImpl.h" />
+    <ClInclude Include="DreRenderQueueGroup.h" />
+    <ClInclude Include="DreRenderQueue.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="DreRenderSystemEnums.h" />
     <ClInclude Include="DreException.h" />
     <ClInclude Include="DreHardwareBuffer.h" />
@@ -78,7 +89,14 @@
     <ClInclude Include="DreSceneRootNode.h" />
     <ClInclude Include="DreScreenManagerConfig.h" />
     <ClInclude Include="DreSerializer.h" />
+    <ClInclude Include="DreSingleton.h" />
+    <ClInclude Include="DreStartPoint.h" />
+    <ClInclude Include="DreStringToIDMap.h" />
+    <ClInclude Include="DreTechnique.h" />
     <ClInclude Include="DreTexture.h" />
+    <ClInclude Include="DreThreadConfig.h" />
+    <ClInclude Include="DreThreadConfigBoost.h" />
+    <ClInclude Include="DreThreadConfigNone.h" />
     <ClInclude Include="DreTypes.h" />
     <ClInclude Include="DreUtility.h" />
     <ClInclude Include="DreViewport.h" />
@@ -89,20 +107,22 @@
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Line3.h" />
     <ClInclude Include="Matrix4.h" />
-    <ClInclude Include="DreNode.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="DreSkinnedMesh.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="DreEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AABB3.cpp" />
     <ClCompile Include="DreCamera.cpp" />
+    <ClCompile Include="DreComponent.cpp" />
     <ClCompile Include="DreConvertibleObject.cpp" />
     <ClCompile Include="DreD3D11Adapter.cpp" />
     <ClCompile Include="DreD3D11HardwareIndexBuffer.cpp" />
     <ClCompile Include="DreD3D11HardwareVertexBuffer.cpp" />
-    <ClCompile Include="DreD3D11HLSLProgram.cpp" />
+    <ClCompile Include="DreD3D11Material.cpp" />
+    <ClCompile Include="DreD3D11Shader.cpp" />
     <ClCompile Include="DreD3D11RenderMapping.cpp" />
     <ClCompile Include="DreD3D11RenderSystem.cpp" />
     <ClCompile Include="DreD3D11RenderTarget.cpp" />
@@ -118,8 +138,12 @@
     <ClCompile Include="DreMath.cpp" />
     <ClCompile Include="DreNormalImage.cpp" />
     <ClCompile Include="DrePixelFormat.cpp" />
-    <ClCompile Include="DreRenderQueue.cpp" />
+    <ClCompile Include="DreRenderQueue.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="DreRenderSystemFactory.cpp" />
+    <ClCompile Include="DreSingleton.cpp" />
+    <ClCompile Include="DreStartPoint.cpp" />
     <ClCompile Include="EulerAngles.cpp" />
     <ClCompile Include="Matrix4.cpp" />
     <ClCompile Include="Quaternion.cpp" />
@@ -137,13 +161,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -159,8 +183,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\常用软件\DirectX\Include;.\3rdParty\FreeImage;.\3rdParty\boost;.\3rdParty\STLPort\Package;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\常用软件\DirectX\Lib\x86;.\3rdParty\boost\stage\lib;.\3rdParty\FreeImage;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(DXSDK_DIR)Include;.\3rdParty\FreeImage;E:\SDK\boost_1_56_0;.\3rdParty\STLPort\Package;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)\Lib\x86;E:\SDK\boost_1_56_0\stage\lib;.\3rdParty\FreeImage;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -174,11 +198,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;_STLP_DEBUG;DREAM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderFile />
+      <DisableSpecificWarnings>4251;4005;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>FreeImage.lib;libboost_filesystem-vc110-mt-gdp-1_53.lib;DxErr.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;D3DX11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>FreeImage.lib;libboost_filesystem-vc120-mt-gd-1_56.lib;DxErr.lib;d3d11.lib;dxgi.lib;dxguid.lib;d3dcompiler.lib;D3DX11d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

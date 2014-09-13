@@ -6,8 +6,8 @@
 namespace dream
 {
 
-	DefaultCamera::DefaultCamera(const string& name, const Vector3& position, const Vector3& orientation,
-		const Vector3 upVector, f32 aspect, f32 near, f32 far, f32 fov) :
+	DefaultCamera::DefaultCamera(const string& name, const Vector3& position, const Vector3& orientation, const Vector3 upVector,
+		Radian fov, f32 aspect, f32 near, f32 far) :
 	//---------------------------------------------------------------------------------------------------
 	Camera(name, position, orientation, upVector, aspect, near, far, fov),
 		mSceneNodeUpdateHandler(bind(&DefaultCamera::_HandleSceneNodeUpdate, this, _1))
@@ -27,12 +27,12 @@ namespace dream
 			mRecaleViewMatrix = false;
 		}
 
-		if(mRecaleProjectMatrix)
+		/*if(mRecaleProjectMatrix)
 		{
 			// 重新计算投影变换矩阵
 			_CalculateProjectMatrix(mFrustum);
 			mRecaleProjectMatrix = false;
-		}
+		}*/
 	}
 
 	/** 把对象绑定到某个节点 */

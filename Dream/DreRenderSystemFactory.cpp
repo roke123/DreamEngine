@@ -3,6 +3,8 @@
 #include "DreD3D11RenderSystem.h"
 #include "DreD3D11Adapter.h"
 
+#include "DreMemoryAllocatorConfig.h"
+
 namespace dream
 {
 
@@ -53,7 +55,7 @@ namespace dream
 		D3D11_IF_FAILED_THROW(hr, "RenderSystemFactory::CreateD3D11RenderSystem");
 
 		return D3D11RenderSystemPtr(
-			new D3D11RenderSystem(
+			DREAM_NEW D3D11RenderSystem(
 				d3dDevice, d3dContext, adapter
 			)
 		);
@@ -78,7 +80,7 @@ namespace dream
 		}
 
 		if(d3dAdapter != nullptr)
-			return D3D11AdapterPtr(new D3D11Adapter(d3dAdapter));
+			return D3D11AdapterPtr(DREAM_NEW D3D11Adapter(d3dAdapter));
 		else
 			return D3D11AdapterPtr();
 	}

@@ -14,8 +14,21 @@ namespace dream
 	class Matrix4
 	{
 	public:
+		/** 默认构造函数 */
+		Matrix4()
+		{
+			// 留空
+		}
+
+		/** 复制构造函数 */
+		Matrix4(const Matrix4& rh)
+		{
+			memcpy_s(this->_mM, sizeof(this->_mM), rh._mM, sizeof(rh._mM));
+		}
+
+	public:
 	//标准操作
-		 void Identity()
+		void Identity()
 		{
 			mM[0][0] = 1.0f; mM[0][1] = 0.0f; mM[0][2] = 0.0f; mM[0][3] = 0.0f;
 			mM[1][0] = 0.0f; mM[1][1] = 1.0f; mM[1][2] = 0.0f; mM[1][3] = 0.0f;
@@ -23,13 +36,13 @@ namespace dream
 			mM[3][0] = 0.0f; mM[3][1] = 0.0f; mM[3][2] = 0.0f; mM[3][3] = 1.0f;
 		}
 
-		 void ZeroTranslation()
+		void ZeroTranslation()
 		{
 			mM[3][0] = mM[3][1] = mM[3][2] = 0.0f;
 		}
 
 		//计算4x4行列式
-		 f32 Determinant() const
+		f32 Determinant() const
 		{
 			return (mM[0][0] * mM[1][1] - mM[0][1] * mM[1][0]) * (mM[2][2] * mM[3][3] - mM[2][3] * mM[3][2]) -
 				(mM[0][0] * mM[1][2] - mM[0][2] * mM[1][0]) * (mM[2][1] * mM[3][3] - mM[2][3] * mM[3][1]) +
@@ -190,6 +203,13 @@ namespace dream
 		bool operator != (const Matrix4& a)
 		{
 			return !this->operator==(a);
+		}
+
+		Matrix4 operator =(const Matrix4& rh) {
+			if (&rh == this)
+				return;
+
+			memcpy_s(this->_mM, sizeof(this->_mM), rh._mM, sizeof(rh._mM));
 		}
 
 	//构造缩放矩阵
@@ -375,8 +395,8 @@ namespace dream
 		{
 			Matrix4 ret;
 
-			f32 sinX = Math::Sin(xRadians);
-			f32 cosX = Math::Cos(xRadians);
+			f32 sinX = Sin(xRadians);
+			f32 cosX = Cos(xRadians);
 
 			ret.mM[0][0] = 1.0f; ret.mM[1][0] = 0.0f;  ret.mM[2][0] = 0.0f;
 			ret.mM[0][1] = 0.0f; ret.mM[1][1] = cosX;  ret.mM[2][1] = sinX;
@@ -413,8 +433,8 @@ namespace dream
 		{
 			Matrix4 ret;
 
-			f32 sinZ = Math::Sin(zRadiens);
-			f32 cosZ = Math::Cos(zRadiens);
+			f32 sinZ = Sin(zRadiens);
+			f32 cosZ = Cos(zRadiens);
 
 			ret.mM[0][0] = cosZ;  ret.mM[1][0] = sinZ; ret.mM[2][0] = 0.0f;
 			ret.mM[0][1] = -sinZ; ret.mM[1][1] = cosZ; ret.mM[2][1] = 0.0f;

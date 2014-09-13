@@ -33,8 +33,8 @@ namespace dream
 		}
 
 		AABB3(void*) : 
-			mMin(Math::MIN_F32, Math::MIN_F32, Math::MIN_F32),
-			mMax(Math::MAX_F32, Math::MAX_F32, Math::MAX_F32),
+			mMin(MIN_F32, MIN_F32, MIN_F32),
+			mMax(MAX_F32, MAX_F32, MAX_F32),
 			mType(AABB3_INFINITE_TYPE)
 		{
 			// 留空
@@ -64,7 +64,7 @@ namespace dream
 			Assert(IsLegal());
 		}
 		/** 获取最小点 */
-		inline Vector3 GetMin() const { return mMin };
+		inline Vector3 GetMin() const { return mMin; };
 
 		// 设置最大点
 		inline void SetMax(f32 x, f32 y, f32 z)
@@ -83,12 +83,12 @@ namespace dream
 			Assert(IsLegal());
 		}
 		/** 获取最小点 */
-		inline Vector3 GetMax() const { return mMax };
+		inline Vector3 GetMax() const { return mMax; };
 
 		inline void Infinite()
 		{
-			mMin.mX = mMin.mY = mMin.mZ = Math::MIN_F32;
-			mMax.mX = mMax.mY = mMax.mZ = Math::MAX_F32; 
+			mMin.mX = mMin.mY = mMin.mZ = MIN_F32;
+			mMax.mX = mMax.mY = mMax.mZ = MAX_F32; 
 			mType = AABB3_INFINITE_TYPE;
 		}
 
@@ -233,12 +233,12 @@ namespace dream
 
 			if(returnBox != NULL)
 			{
-				returnBox->mMin.mX = Math::Max(mMin.mX, box.mMin.mX);
-				returnBox->mMin.mY = Math::Max(mMin.mY, box.mMin.mY);
-				returnBox->mMin.mZ = Math::Max(mMin.mZ, box.mMin.mZ);
-				returnBox->mMax.mX = Math::Min(mMax.mX, box.mMax.mX);
-				returnBox->mMax.mY = Math::Min(mMax.mY, box.mMax.mY);
-				returnBox->mMax.mZ = Math::Min(mMax.mZ, box.mMax.mZ);
+				returnBox->mMin.mX = Max(mMin.mX, box.mMin.mX);
+				returnBox->mMin.mY = Max(mMin.mY, box.mMin.mY);
+				returnBox->mMin.mZ = Max(mMin.mZ, box.mMin.mZ);
+				returnBox->mMax.mX = Min(mMax.mX, box.mMax.mX);
+				returnBox->mMax.mY = Min(mMax.mY, box.mMax.mY);
+				returnBox->mMax.mZ = Min(mMax.mZ, box.mMax.mZ);
 			}
 		}
 

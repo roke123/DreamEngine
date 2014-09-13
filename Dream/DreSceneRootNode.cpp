@@ -36,7 +36,7 @@ namespace dream
 	*/
 	SceneNodePtr SceneRootNode::DetachChildNode(const string& name)
 	{
-		SceneNodeSetIte ite = mNodeSet.find(SceneNodePtr(new SceneNode(name)));
+		SceneNodeSetIte ite = mNodeSet.find(SceneNodePtr(DREAM_NEW SceneNode(name)));
 		DreAssert(ite == mNodeSet.end(), "SceneNode中不存在同名子节点");
 
 		SceneNodePtr ret = *ite;

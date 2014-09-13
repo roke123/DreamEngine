@@ -1,40 +1,41 @@
 #ifndef __DRECONTAINER_H__
 #define __DRECONTAINER_H__
-	
+
+// 由于旧版本的stlport与microsoft库冲突太大，改用原生库
+#undef _STLP_DEBUG
+
 // 各种容器类
-#include <stlport/map>
-#include <stlport/hash_map>
-#include <stlport/list>
-#include <stlport/vector>
-#include <stlport/set>
-#include <stlport/deque>
-#include <stlport/algorithm>
+#include <map>
+#include <hash_map>
+#include <list>
+#include <vector>
+#include <set>
+#include <deque>
+#include <algorithm>
 // 容器适配器
-#include <stlport/stack>
-#include <stlport/queue>
-#include <stlport/string>
+#include <stack>
+#include <queue>
+#include <string>
 
 namespace dream
 {
-
-
 	//简单的使用stlport的容器
-	using stlport::vector;
-	using stlport::list;
-	using stlport::map;
-	using stlport::make_pair;
-	using stlport::multimap;
-	using stlport::set;
-	using stlport::multiset;
-	using stlport::deque;
+	using std::vector;
+	using std::list;
+	using std::map;
+	using std::make_pair;
+	using std::multimap;
+	using std::set;
+	using std::multiset;
+	using std::deque;
 
 	//简单的使用stlport的容器适配器
-	using stlport::queue;
-	using stlport::priority_queue;
-	using stlport::list;
+	using std::queue;
+	using std::priority_queue;
+	using std::list;
 
-	using stlport::string;
-	using stlport::wstring;
+	using std::string;
+	using std::wstring;
 
 //	using namespace stlport;
 //

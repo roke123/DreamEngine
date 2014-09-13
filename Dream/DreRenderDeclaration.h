@@ -32,10 +32,7 @@ namespace dream
 	class RenderTarget;
 	typedef shared_ptr<RenderTarget>					RenderTargetPtr;
 
-	class HLSLProgram;
-	typedef shared_ptr<HLSLProgram>						HLSLProgramPtr;
-
-	struct DRE_HLSLPROGRAM_DESC;
+	struct DRE_SHADER_DESC;
 
 	class RenderSystem;
 	typedef shared_ptr<RenderSystem>					RenderSystemPtr;
@@ -60,12 +57,27 @@ namespace dream
 	class RenderParam;
 	typedef shared_ptr<RenderParam>						RenderParamPtr;
 
+	class Material;
+	typedef shared_ptr<Material>						MaterialPtr;
+
+	class Technique;
+	typedef shared_ptr<Technique>						TechniquePtr;
+
+	class Shader;
+	typedef shared_ptr<Shader>							ShaderPtr;
+
+	class Sampler;
+	typedef shared_ptr<Sampler>							SamplerPtr;
+
 	class Image;
 	typedef shared_ptr<Image>							ImagePtr;
 
 	class Light;
 	typedef shared_ptr<Light>							LightPtr;
 	typedef list<Light>									LightList;
+
+	class Pass;
+	typedef shared_ptr<Pass>							PassPtr;
 
 	class RenderSystemCapabilities;
 

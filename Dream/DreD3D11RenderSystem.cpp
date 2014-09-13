@@ -8,8 +8,10 @@
 #include "DreD3D11RenderTarget.h"
 #include "DreD3D11Texture.h"
 #include "DreViewport.h"
-#include "DreSampler.h"
-#include "DreD3D11HLSLProgram.h"
+#include "DreD3D11Sampler.h"
+#include "DreD3D11Material.h"
+#include "DreD3D11Shader.h"
+#include "DreRenderParam.h"
 
 #include "DreImage.h"
 #include "DreImageLoader.h"
@@ -28,7 +30,7 @@ namespace dream
 	RenderSystem(adapter),
 		mD3D11Device(d3dDevice), mD3D11Context(d3dContext),
 		mIsRasterizerStateChange(false), mIsBlendStateChange(false), mIsDepthStencilStateChange(false),
-		mIsVertexBufferChange(false), mIsIndexBufferChange(false), mIsHLSLProgramChange(false),
+		mIsVertexBufferChange(false), mISindexBufferChange(false), mIsMaterialChange(false),
 		mPrimitive(D3D11_PRIMITIVE_TRIANGLE), 
 		mInputLayout(nullptr)
 	{
@@ -138,7 +140,7 @@ namespace dream
 			mCapabilities.AddSupportedCapabilitie(DRE_CAPABILITIES_RTT_SEPARATE_DEPTHBUFFER); }
 		/* 默认支持 */ { 
 			mCapabilities.AddSupportedCapabilitie(DRE_CAPABILITIES_RTT_MAIN_DEPTHBUFFER_ATTACHABLE); }
-		/*{ mCapabilities.AddSupportedCapabilitie(DRE_CAPABILITIES_RTT_DEPTHBUFFER_RESOLUTION_LESSEQUAL); }*/
+		/*{ mCapabilities.AddSupportedCapabilitie(DRE_CAPABILITIES_RTT_DEPTHBUFFER_RESOLUTION_LESSFloat::IsEqual); }*/
 		if(feature.OutFormatSupport & D3D11_FORMAT_SUPPORT_IA_VERTEX_BUFFER ){ 
 			mCapabilities.AddSupportedCapabilitie(DRE_CAPABILITIES_VERTEX_BUFFER_INSTANCE_DATA); }
 		if(feature.OutFormatSupport & D3D11_FORMAT_SUPPORT_SHADER_LOAD ){ 
@@ -177,7 +179,7 @@ namespace dream
 			{																								\
 			case D3D_SIT_CBUFFER:																			\
 				{																							\
-					RenderParamPtr renderParam = mCurrentHLSLProgram->GetRenderParam(resourceDesc.Name);	\
+				RenderParamPtr renderParam = mCurrentMaterial->GetRenderParam(resourceDesc.Name);			\
 					if(renderParam == nullptr)																\
 					{																						\
 						DRE_EXCEPT(DRE_EXCEPTION_ITEM_NOT_FOUND, "找不到hlsl要求的渲染参数",				\
@@ -201,49 +203,49 @@ namespace dream
 					D3D11_IF_FAILED_THROW(hr, "D3D11RenderSystem::Render");									\
 																											\
 					ID3D11Buffer* temp = buffer.Get();														\
-					mD3D11Context->PSSetConstantBuffers(resourceDesc.BindPoint,								\
+					mD3D11Context->shader##SetConstantBuffers(resourceDesc.BindPoint,						\
 						resourceDesc.BindCount, &temp);														\
 				}																							\
 				break;																						\
 			case D3D_SIT_SAMPLER:																			\
 				{																							\
-					ID3D11SamplerStatePtr sampler = mSamplerMap[resourceDesc.Name];							\
+					D3D11SamplerPtr sampler = mCurrentMaterial->mSamplerMap[resourceDesc.Name];				\
 					if(sampler == nullptr)																	\
 					{																						\
-						if (mSamplerArray[resourceDesc.BindPoint] == nullptr)								\
+						/*if (mSamplerArray[resourceDesc.BindPoint] == nullptr)	*/							\
 						{																					\
 							DRE_EXCEPT(DRE_EXCEPTION_ITEM_NOT_FOUND, "找不到hlsl要求的渲染参数",			\
 								"D3D11RenderSystem::Render");												\
 						}																					\
-						else																				\
+						/*else																				\
 						{																					\
 							sampler = mSamplerArray[resourceDesc.BindPoint];								\
-						}																					\
+						}*/																					\
 					}																						\
 																											\
-					ID3D11SamplerState* temp = sampler.Get();												\
-					mD3D11Context->PSSetSamplers(resourceDesc.BindPoint, resourceDesc.BindCount,			\
+					ID3D11SamplerState* temp = sampler->GetSamplerState().Get();							\
+					mD3D11Context->shader##SetSamplers(resourceDesc.BindPoint, resourceDesc.BindCount,		\
 						&temp);																				\
 				}																							\
 				break;																						\
 			case D3D_SIT_TEXTURE:																			\
 				{																							\
-					D3D11TexturePtr texture = mTextureMap[resourceDesc.Name];								\
+					D3D11TexturePtr texture = mCurrentMaterial->mTextureMap[resourceDesc.Name];				\
 					if(texture == nullptr)																	\
 					{																						\
-						if (mTextureArray[resourceDesc.BindPoint] == nullptr)								\
+						/*if (mTextureArray[resourceDesc.BindPoint] == nullptr)	*/							\
 						{																					\
 							DRE_EXCEPT(DRE_EXCEPTION_ITEM_NOT_FOUND, "找不到hlsl要求的渲染参数",			\
 								"D3D11RenderSystem::Render");												\
 						}																					\
-						else																				\
+						/*else																				\
 						{																					\
 							texture = mTextureArray[resourceDesc.BindPoint];								\
-						}																					\
+						}*/																					\
 					}																						\
 																											\
 					ID3D11ShaderResourceView* temp = texture->GetShaderResource().Get();					\
-					mD3D11Context->PSSetShaderResources(resourceDesc.BindPoint,								\
+					mD3D11Context->shader##SetShaderResources(resourceDesc.BindPoint,						\
 						resourceDesc.BindCount, &temp);														\
 				}																							\
 				break;																						\
@@ -260,28 +262,24 @@ namespace dream
 	{
 		D3D11_SHADER_DESC shaderDesc = {0};																																						
 		HRESULT hr = 0;
-		
-		if(mIsHLSLProgramChange)
+		D3D11ShaderPtr shaderPtr = mCurrentMaterial->mShader;
+
+		if (mIsMaterialChange)
 		{
-
 			// 设置HLSL渲染
-			mD3D11Context->VSSetShader(mCurrentHLSLProgram->GetVertexShader().Get(), 0, 0);
-			mD3D11Context->DSSetShader(mCurrentHLSLProgram->GetDomainShader().Get(), 0, 0);
-			mD3D11Context->HSSetShader(mCurrentHLSLProgram->GetHullShader().Get(), 0, 0);
-			mD3D11Context->GSSetShader(mCurrentHLSLProgram->GetGeometryShader().Get(), 0, 0);
-			mD3D11Context->PSSetShader(mCurrentHLSLProgram->GetPixelShader().Get(), 0, 0);
+			mD3D11Context->VSSetShader(shaderPtr->GetVertexShader().Get(), 0, 0);
+			mD3D11Context->DSSetShader(shaderPtr->GetDomainShader().Get(), 0, 0);
+			mD3D11Context->HSSetShader(shaderPtr->GetHullShader().Get(), 0, 0);
+			mD3D11Context->GSSetShader(shaderPtr->GetGeometryShader().Get(), 0, 0);
+			mD3D11Context->PSSetShader(shaderPtr->GetPixelShader().Get(), 0, 0);
 
-			SetShaderRenderParam(VS, mCurrentHLSLProgram->GetVertexShaderReflect());
-			SetShaderRenderParam(DS, mCurrentHLSLProgram->GetDomainShaderReflect());
-			SetShaderRenderParam(HS, mCurrentHLSLProgram->GetHullShaderReflect());
-			SetShaderRenderParam(GS, mCurrentHLSLProgram->GetGeometryShaderReflect());
-			SetShaderRenderParam(PS, mCurrentHLSLProgram->GetPixelShaderReflect());
+			SetShaderRenderParam(VS, shaderPtr->GetVertexShaderReflect());
+			SetShaderRenderParam(DS, shaderPtr->GetDomainShaderReflect());
+			SetShaderRenderParam(HS, shaderPtr->GetHullShaderReflect());
+			SetShaderRenderParam(GS, shaderPtr->GetGeometryShaderReflect());
+			SetShaderRenderParam(PS, shaderPtr->GetPixelShaderReflect());
 
-			// 清理映射，避免语义重复
-			mTextureMap.clear();
-			mSamplerMap.clear();
-
-			mIsHLSLProgramChange = false;
+			mIsMaterialChange = false;
 		}
 
 		// 设置混合状态
@@ -336,21 +334,21 @@ namespace dream
 			// 设置顶点描述
 			ID3D11InputLayoutPtr inputLayout;
 			hr = mD3D11Device->CreateInputLayout(mInputLayout.get(), mInputLayoutCount, 
-				mCurrentHLSLProgram->GetShaderBlob()->GetBufferPointer(),
-				mCurrentHLSLProgram->GetShaderBlob()->GetBufferSize(), inputLayout.GetReference());
+				shaderPtr->GetShaderBlob()->GetBufferPointer(),
+				shaderPtr->GetShaderBlob()->GetBufferSize(), inputLayout.GetReference());
 			D3D11_IF_FAILED_THROW(hr, "D3D11RenderSystem::SetHLSLShader");
 			mD3D11Context->IASetInputLayout(inputLayout.Get());
 
 			mIsVertexBufferChange = false;
 		}
 
-		if(mIsIndexBufferChange)
+		if(mISindexBufferChange)
 		{
 			// 设置索引缓冲区
 			mD3D11Context->IASetIndexBuffer(mCurrentIndexBuffer->GetIndexBuffer().Get(),
 				D3D11RenderMapping::Get(mCurrentIndexBuffer->GetIndexType()), 0);
 
-			mIsIndexBufferChange = false;
+			mISindexBufferChange = false;
 		}
 
 		// 开始渲染RenderTarget
@@ -812,7 +810,7 @@ namespace dream
 	{
 		VertexElementConstIterator ite = declaration.begin();
 
-		mInputLayout.reset(new D3D11_INPUT_ELEMENT_DESC[declaration.size()]);
+		mInputLayout.reset(DREAM_NEW D3D11_INPUT_ELEMENT_DESC[declaration.size()]);
 		mInputLayoutCount = declaration.size();
 
 		for(int i = 0; ite != declaration.end(); ++ ite, ++ i)
@@ -851,16 +849,16 @@ namespace dream
 	*/
 	void D3D11RenderSystem::SetHardwareIndexBuffer(HardwareIndexBufferPtr& indexBuffer)
 	{
-		mIsIndexBufferChange = true;
+		mISindexBufferChange = true;
 
 		mCurrentIndexBuffer = dynamic_pointer_cast<D3D11HardwareIndexBuffer>(indexBuffer);
 	}
 	
-	void D3D11RenderSystem::SetHLSLShader(HLSLProgramPtr& hlslShader)
+	void D3D11RenderSystem::SetMaterial(MaterialPtr& material)
 	{
-		mIsHLSLProgramChange = true;
+		mIsMaterialChange = true;
 
-		mCurrentHLSLProgram = dynamic_pointer_cast<D3D11HLSLProgram>(hlslShader);
+		mCurrentMaterial = dynamic_pointer_cast<D3D11Material>(material);
 	}
 
 #pragma endregion
@@ -1021,29 +1019,6 @@ namespace dream
 #pragma endregion
 
 #pragma region SamplerState
-	/** 设置一个寄存器号为index的sampler
-	* @param	index		分配的寄存器索引
-	* @param	sampler		采样器
-	*/
-	void D3D11RenderSystem::SetSampler(u32 texIndex, const SamplerDesc& sampler)
-	{
-		DreAssert(texIndex >= 0 && texIndex < D3D11_MAX_SAMPLER_NUM,
-			"设置的Sampler索引越界");
-
-		mSamplerArray[texIndex] = this->CreateSampler(sampler);
-	}
-
-	/** 设置一个语义为sematics的sampler
-	* @param	index		hlsl语义
-	* @param	sampler		采样器
-	*/
-	void D3D11RenderSystem::SetSampler(const c8* sematics, const SamplerDesc& sampler)
-	{
-		ID3D11SamplerStatePtr temp = this->CreateSampler(sampler);
-
-		mSamplerMap.insert(make_pair<string, ID3D11SamplerStatePtr>(string(sematics), temp));
-	}
-
 	ID3D11SamplerStatePtr D3D11RenderSystem::CreateSampler(const SamplerDesc& sampler)
 	{
 		D3D11_SAMPLER_DESC samplerDesc;
@@ -1063,29 +1038,6 @@ namespace dream
 		D3D11_IF_FAILED_THROW(hr, "D3D11RenderSystem::Render");
 
 		return d3dSampler;
-	}
-
-	/** 设置一个寄存器号为index的texture
-	* @param	index		分配的寄存器索引
-	* @param	texture		纹理
-	*/
-	void D3D11RenderSystem::SetTexture(u32 texIndex, TexturePtr& texture)
-	{
-		DreAssert(texIndex >= 0 && texIndex < D3D11_MAX_SAMPLER_NUM,
-			"设置的Sampler索引越界");
-
-		mTextureArray[texIndex] = D3D11TexturePtr(
-			dynamic_cast<D3D11Texture*>(texture.get()));
-	}
-
-	/** 设置一个语义为sematics的texture
-	* @param	index		hlsl语义
-	* @param	texture		纹理
-	*/
-	void D3D11RenderSystem::SetTexture(const c8* sematics, TexturePtr& texture)
-	{
-		mTextureMap.insert(stlport::make_pair<string, D3D11TexturePtr>(string(sematics), 
-			dynamic_pointer_cast<D3D11Texture>(texture)));
 	}
 
 #pragma endregion
@@ -1437,7 +1389,7 @@ namespace dream
 		}
 
 		// 如果设置了Gamma值，则进行Gamma校正
-		if (!Equal(gamma, 1.0f))
+		if (!Float::IsEqual(gamma, 1.0f))
 		{
 			// 如没有重新分配空间
 			if (subResource == image->GetDataPtr())
@@ -1523,7 +1475,7 @@ namespace dream
 	HardwareVertexBufferPtr D3D11RenderSystem::CreateHardwareVertexBuffer(
 		const u8Array data, u32 vertexSize, u32 numVertices,
 		DRE_PRIMITIVE_TOPOLOGY primitive,
-		DRE_BUFFER_USAGE usage, bool hasInstanceData /* = false */, u32 instanceDataStepRate /* = 0 */)
+		DRE_BUFFER_USAGE usage, bool haSinstanceData /* = false */, u32 instanceDataStepRate /* = 0 */)
 	{
 		D3D11_BUFFER_DESC bufferDesc = {0};
 		bufferDesc.BindFlags = D3D11_BIND_VERTEX_BUFFER;
@@ -1545,7 +1497,7 @@ namespace dream
 			new D3D11HardwareVertexBuffer(
 			vertexBuffer, mD3D11Device, vertexSize, numVertices,
 			primitive,
-			usage, hasInstanceData, instanceDataStepRate
+			usage, haSinstanceData, instanceDataStepRate
 			)
 		));
 	}
@@ -1555,7 +1507,7 @@ namespace dream
 		u32 vertexSize, u32 numVertices,
 		DRE_PRIMITIVE_TOPOLOGY primitive,
 		DRE_BUFFER_USAGE usage, 
-		bool hasInstanceData /* = false */, u32 instanceDataStepRate /* = 0 */)
+		bool haSinstanceData /* = false */, u32 instanceDataStepRate /* = 0 */)
 	{
 		u8Array tempData(readBuffer->Size());
 		readBuffer->Read(tempData, readBuffer->Size());
@@ -1564,7 +1516,7 @@ namespace dream
 			this->CreateHardwareVertexBuffer(
 			tempData, vertexSize, numVertices,
 			primitive,
-			usage, hasInstanceData, instanceDataStepRate));
+			usage, haSinstanceData, instanceDataStepRate));
 	}
 
 	/** 从readBuffer中读取数据来生成HardwareIndexBuffer
@@ -1612,7 +1564,7 @@ namespace dream
 
 	/** 从读取流中加载HLSLProgram
 	*/
-	HLSLProgramPtr D3D11RenderSystem::CreateHLSLProgram(ReadBufferPtr readBuffer, const DRE_HLSLPROGRAM_DESC& desc)
+	ShaderPtr D3D11RenderSystem::CreateShader(ReadBufferPtr readBuffer, const DRE_SHADER_DESC& desc)
 	{
 	//	u8Array tempData(readBuffer->Size());
 	//	readBuffer->Read(tempData, readBuffer->Size());
@@ -1704,7 +1656,7 @@ namespace dream
 
 	/** 从文件中加载HLSLProgram
 	*/
-	HLSLProgramPtr D3D11RenderSystem::CreateHLSLProgram(const DRE_HLSLPROGRAM_DESC& desc)
+	ShaderPtr D3D11RenderSystem::CreateShader(const DRE_SHADER_DESC& desc)
 	{
 		ID3D10BlobPtr vertexShaderBlob;
 		// 创建vertexshader
@@ -1793,8 +1745,8 @@ namespace dream
 			D3D11_IF_FAILED_THROW(hr, "D3D11RenderSystem::CreateHLSLProgram");
 		}
 
-		return std::move(HLSLProgramPtr(
-			new D3D11HLSLProgram(
+		return std::move(D3D11ShaderPtr(
+			new D3D11Shader(
 				vertexShaderBlob, 
 				vertexShader, vertexShaderReflect,
 				domainShader, domainShaderReflect,
@@ -1837,7 +1789,7 @@ namespace dream
 
 	/** 从文件中加载HLSLProgram
 	*/
-	HLSLProgramPtr CreateHLSLProgram(const c8* fileName);
+	D3D11ShaderPtr CreateHLSLProgram(const c8* fileName);
 
 #pragma endregion
 

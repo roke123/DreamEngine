@@ -1,5 +1,5 @@
-#ifndef __DREMATERIAL_H__
-#define __DREMATERIAL_H__
+#ifndef __DRERENDERPARAM_H__
+#define __DRERENDERPARAM_H__
 
 #include "DreRenderDeclaration.h"
 
@@ -16,7 +16,7 @@ namespace dream
 		* @param size 渲染数据长度
 		* @param isCopy 是否重新分配内存并创建副本
 		*/
-		RenderParam( void * param, u32 sizeInByte, bool isCopy = false )
+		RenderParam(void * param, u32 sizeInByte, bool isCopy = true )
 		{
 			mIsCopy = isCopy;
 			mSizeInByte = sizeInByte;

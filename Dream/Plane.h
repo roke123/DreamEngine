@@ -31,7 +31,7 @@ namespace dream
 		{
 			Vector3 e1 = n1 - n2, e2 = n1 - n3;
 			//判断e1,e2是否共线
-			Assert( Equal( e1.mX / e2.mX, e1.mY / e2.mY ) )
+			Assert( Float::IsEqual( e1.mX / e2.mX, e1.mY / e2.mY ) )
 
 			//计算法向量和d
 			n_ = Cross( e1, e2 );
@@ -57,7 +57,7 @@ namespace dream
 		{
 			Vector3 e1 = n1 - n2, e2 = n1 - n3;
 			//判断e1,e2是否共线
-			Assert( Equal( e1.mX / e2.mX, e1.mY / e2.mY ) )
+			Assert( Float::IsEqual( e1.mX / e2.mX, e1.mY / e2.mY ) )
 
 			//计算法向量和d
 			n_ = Cross( e1, e2 );
@@ -73,9 +73,9 @@ namespace dream
 		inline void SetD( f32 d ) { d_ = d; }
 
 	//标准操作
-		inline bool operator == ( const Plane& p ) const { return n_ == p.n_ && Equal( d_, p.d_ ); }
+		inline bool operator == ( const Plane& p ) const { return n_ == p.n_ && Float::IsEqual( d_, p.d_ ); }
 
-		inline bool operator != ( const Plane& p ) const { return !Equal( d_, p.d_ ) || n_ != p.n_; }
+		inline bool operator != ( const Plane& p ) const { return !Float::IsEqual( d_, p.d_ ) || n_ != p.n_; }
 
 		inline Plane operator + ( f32 d ) const { return Plane( n_, d_ + d ); }
 

@@ -254,7 +254,7 @@ namespace dream
 		*/
 		virtual void SetHardwareIndexBuffer(HardwareIndexBufferPtr& vertexBuffer) = 0;
 
-		virtual void SetHLSLShader(HLSLProgramPtr& hlslShader) = 0;
+		virtual void SetMaterial(MaterialPtr& hlslShader) = 0;
 
 	#pragma endregion
 
@@ -357,29 +357,7 @@ namespace dream
 	#pragma endregion
 
 	#pragma region SamplerState
-		/** 设置一个寄存器号为index的sampler
-		* @param	index		分配的寄存器索引
-		* @param	sampler		采样器
-		*/
-		virtual void SetSampler(u32 texIndex, const SamplerDesc& sampler) = 0;
-
-		/** 设置一个语义为sematics的sampler
-		* @param	sematics	hlsl语义
-		* @param	sampler		采样器
-		*/
-		virtual void SetSampler(const c8* sematics, const SamplerDesc& sampler) = 0;
-
-		/** 设置一个寄存器号为index的texture
-		* @param	index		分配的寄存器索引
-		* @param	texture		纹理
-		*/
-		virtual void SetTexture(u32 texIndex, TexturePtr& texture) = 0;
-
-		/** 设置一个语义为sematics的texture
-		* @param	sematics	hlsl语义
-		* @param	texture		纹理
-		*/
-		virtual void SetTexture(const c8* sematics, TexturePtr& texture) = 0;
+		
 
 	#pragma endregion
 
@@ -448,7 +426,7 @@ namespace dream
 		*/
 		virtual HardwareVertexBufferPtr CreateHardwareVertexBuffer(ReadBufferPtr readBuffer, u32 vertexSize, u32 numVertices,
 			DRE_PRIMITIVE_TOPOLOGY primitive,
-			DRE_BUFFER_USAGE usage, bool hasInstanceData = false, u32 instanceDataStepRate = 0) = 0;
+			DRE_BUFFER_USAGE usage, bool haSinstanceData = false, u32 instanceDataStepRate = 0) = 0;
 
 		/** 从readBuffer中读取数据来生成HardwareIndexBuffer
 		* @param		readBuffer			可读取缓冲区
@@ -459,11 +437,11 @@ namespace dream
 
 		/** 从读取流中加载HLSLProgram
 		*/
-		virtual HLSLProgramPtr CreateHLSLProgram(ReadBufferPtr readBuffer, const DRE_HLSLPROGRAM_DESC& desc) = 0;
+		virtual ShaderPtr CreateShader(ReadBufferPtr readBuffer, const DRE_SHADER_DESC& desc) = 0;
 
 		/** 从文件中加载HLSLProgram
 		*/
-		virtual HLSLProgramPtr CreateHLSLProgram(const DRE_HLSLPROGRAM_DESC& desc) = 0;
+		virtual ShaderPtr CreateShader(const DRE_SHADER_DESC& desc) = 0;
 
 	#pragma endregion
 
