@@ -124,8 +124,8 @@ namespace dream
 		* @param	y		在Y轴方向的平移距离
 		* @param	z		在Z轴方向的平移距离
 		*/
-		void SetAbsoluteTranslation(f32 x, f32 y, f32 z) { _NeedUpdate(); mLocalPosition = Vector3(x, y, z); }
-		void SetAbsoluteTranslation(const Vector3& tranlation) { _NeedUpdate(); mLocalPosition = tranlation; }
+		void SetAbsoluteTranslation(f32 x, f32 y, f32 z) { _NotifyTransformChanged(); mLocalPosition = Vector3(x, y, z); }
+		void SetAbsoluteTranslation(const Vector3& tranlation) { _NotifyTransformChanged(); mLocalPosition = tranlation; }
 		/** 取得相对于当前位置的平移距离 */
 		Vector3 GetAbsolutionTranslation() const { return mLocalPosition; }
 
@@ -134,13 +134,13 @@ namespace dream
 		* @param	y		在Y轴方向的放大倍数
 		* @param	z		在Z轴方向的放大倍数
 		*/
-		void SetLocalScale(f32 x, f32 y, f32 z) { _NeedUpdate(); mLocalScale = Vector3(x, y, z); }
-		void SetLocalScale(const Vector3& scale) { _NeedUpdate(); mLocalScale = scale; }
+		void SetLocalScale(f32 x, f32 y, f32 z) { _NotifyTransformChanged(); mLocalScale = Vector3(x, y, z); }
+		void SetLocalScale(const Vector3& scale) { _NotifyTransformChanged(); mLocalScale = scale; }
 		/** 取得相对于当前模型大小的放大倍数 */
 		Vector3 GetLocalScale() const { return mLocalScale; }
 
 		/** 相对于当前模型方向的旋转方向 */
-		void SetLocalRotation(const Quaternion& orientation) { _NeedUpdate(); mLocalOrientation = orientation; }
+		void SetLocalRotation(const Quaternion& orientation) { _NotifyTransformChanged(); mLocalOrientation = orientation; }
 		/** 取得相对于当前模型方向的旋转方向 */
 		Quaternion GetLocalRotation() const { return mLocalOrientation; }
 
@@ -149,8 +149,8 @@ namespace dream
 		* @param	y		在Y轴方向的平移距离
 		* @param	z		在Z轴方向的平移距离
 		*/
-		void SetRelativeTranslation(f32 x, f32 y, f32 z) { _NeedUpdate(); mRelativePosition = Vector3(x, y, z); }
-		void SetRelativeTranslation(const Vector3& tranlation) { _NeedUpdate(); mRelativePosition = tranlation; }
+		void SetRelativeTranslation(f32 x, f32 y, f32 z) { _NotifyTransformChanged(); mRelativePosition = Vector3(x, y, z); }
+		void SetRelativeTranslation(const Vector3& tranlation) { _NotifyTransformChanged(); mRelativePosition = tranlation; }
 		/** 取得相对于父节点的平移距离 */
 		Vector3 GetRelativeTranslation() const { return mRelativePosition; }
 
@@ -159,28 +159,31 @@ namespace dream
 		* @param	y		在Y轴方向的放大倍数
 		* @param	z		在Z轴方向的放大倍数
 		*/
-		void SetRelativeScale(f32 x, f32 y, f32 z) { _NeedUpdate(); mRelativeScale = Vector3(x, y, z); }
-		void SetRelativeScale(const Vector3& scale) { _NeedUpdate(); mRelativeScale = scale; }
+		void SetRelativeScale(f32 x, f32 y, f32 z) { _NotifyTransformChanged(); mRelativeScale = Vector3(x, y, z); }
+		void SetRelativeScale(const Vector3& scale) { _NotifyTransformChanged(); mRelativeScale = scale; }
 		/** 取得相对于父节点大小的放大倍数 */
 		Vector3 GetRelativeScale() const { return mRelativeScale; }
 
 		/** 相对于父节点方向的旋转方向 */
-		void SetRelativeRotation(const Quaternion& orientation) { _NeedUpdate(); mRelativeOrientation = orientation; }
+		void SetRelativeRotation(const Quaternion& orientation) { _NotifyTransformChanged(); mRelativeOrientation = orientation; }
 		/** 取得相对于父节点方向的旋转方向*/
 		Quaternion GetRelativeRotation() const { return mRelativeOrientation; }
 		
 		/** 取得最终坐标
 		* @note override by Node
 		*/
-		virtual Vector3 _GetFinalPosition() const { return mFinalPosition; };
+		virtual Vector3 _GetFinalPosition() { _ForceUpwardTransformUpdate(); return mFinalPosition; };
 		/** 取得最终方向
 		* @note override by Node
 		*/
-		virtual Quaternion _GetFinalOrientation() const override { return mFinalOrientation; };
+		virtual Quaternion _GetFinalOrientation() override { _ForceUpwardTransformUpdate(); return mFinalOrientation; };
 		/** 取得最终Scale
 		* @note override by Node
 		*/
-		virtual Vector3 _GetFinalScale() const override { return mFinalScale; };
+		virtual Vector3 _GetFinalScale() override { _ForceUpwardTransformUpdate(); return mFinalScale; };
+
+		/** 取得*/
+		Vector3 _GetForward() { return Vector3::Forward *_GetFinalOrientation().QuaternionToMatrix4(); }
 
 		/** 渲染前更新节点，计算当前节点属性
 		* @note override by Node
@@ -197,8 +200,13 @@ namespace dream
 		*/
 		virtual void _FixedUpdate() override;
 
-	private:
+	protected:
 		void _TransformUpdate();
+
+		void _ForceUpwardTransformUpdate();
+
+		/** 通知父节点本节点的 transform 属性发生改变 */
+		void _NotifyTransformChanged();
 
 	public:
 
@@ -207,10 +215,10 @@ namespace dream
 		*/
 		virtual AABB3 GetBoundBox() const override { return AABB3::EmptyAABB3; }
 
-		/** 通知父节点绑定了一个实体
+		/** 通知父节点本节点属性改变需要更新，debug状态下会检查是否存在同名节点
 		* @note override by Node
 		*/
-		void _NotifyChanged() override;
+		void _NotifyNeedUpdate() override;
 
 		/** 查找可见元素
 		* @note override by Node
@@ -221,7 +229,7 @@ namespace dream
 		* @param	name		子节点名
 		* @param	child		子节点指针
 		*/
-		void AttachChildNode(const string& name, SceneNodePtr& child);
+		void AttachChildNode(string name, SceneNodePtr child);
 		/** 解除子节点的绑定
 		* @param	name		子节点名
 		* @return				返回子节点的右值引用
@@ -246,10 +254,10 @@ namespace dream
 		void _SetNodeName(const string& nodeName) { mNodeName = nodeName; }
 
 		/** 设置父节点指针 */
-		void _SetParent(const NodePtr& parent) { _NeedUpdate(); mParentNode = parent; }
-		
-		/** 标志节点需要更新 */
-		void _NeedUpdate() { mRecaleWorldMatrix = true; mTransformUpdated = false; };
+		void _SetParent(const NodePtr& parent) { mParentNode = parent; }
+
+		/** 标志本节点需要更新 */
+		void _MarkNeedUpdate() { mChildrenTransformUpdated = false; mTransformUpdated = false; }
 
 		/** 计算世界矩阵 */
 		Matrix4 SceneNode::GetWorldMatrix() const;
@@ -292,21 +300,20 @@ namespace dream
 		bool					mIsEnable;
 		/// 本节点属性已更新
 		bool					mTransformUpdated;
-		/// 节点下的子节点已更新
+		/// 本节点的子节点是否已更新
 		bool					mChildrenTransformUpdated;
 
-		typedef set<SceneNodePtr, SceneNodeNameCmp>			SceneNodeSet;
-		typedef SceneNodeSet::iterator					SceneNodeSetIte;
-		typedef SceneNodeSet::const_iterator			SceneNodeSetConstIte;
+		typedef map<string, SceneNodePtr, SceneNodeNameCmp>			SceneNodeMap;
+		typedef SceneNodeMap::iterator								SceneNodeSetIte;
+		typedef SceneNodeMap::const_iterator						SceneNodeSetConstIte;
 		/// 子节点集
-		SceneNodeSet			mNodeSet;
+		SceneNodeMap			mNodeMap;
 		/// 父节点
 		NodePtr					mParentNode;
 
-		/// 是否需要重新计算世界矩阵
-		mutable bool			mRecaleWorldMatrix;
+
 		/// 世界矩阵
-		mutable Matrix4			mWorldMatrix;
+		Matrix4			mWorldMatrix;
 
 		/// 组件集
 		ComponentMap			mComponentMap;

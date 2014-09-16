@@ -169,6 +169,21 @@ namespace dream
 		return mWaitForVerticalBlank == 0;
 	}
 
+	typedef std::pair<f32, LightPtr>																LightAndDistance;
+	struct LightAndDistanceLess
+	{
+		bool operator () (const LightAndDistance& lh, const LightAndDistance& rh)
+		{
+			return lh.first < rh.first;
+		}
+	};
+	typedef priority_queue<LightAndDistance, vector<LightAndDistance>, LightAndDistanceLess>		VertexLightList;
+
+	void D3D11RenderSystem::_SetPass(PassPtr& pass)
+	{
+
+	}
+
 	void D3D11RenderSystem::_FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, LightList& manualLights)
 	{
 		// Issue view / projection changes if any
@@ -184,12 +199,14 @@ namespace dream
 
 			if (pass->GetLightingMode() == DRE_LIGHTING_FORWARD_ADD)
 			{
+				// 使用前向附加光照，对最亮的方向光源做Forward Base渲染
+
 				f32 dis = Float::PositiveInfinity;		
 				
-				LightPtr brightestDirLightIte = nullptr;
-				LightList importantLightList;
-				priority_queue<f32, LightPtr, std::greater<f32>> vertexLightList;
-				LightList lastLightList;
+				LightPtr		brightestDirLightIte = nullptr;
+				LightList		importantLightList;
+				VertexLightList vertexLightList;
+				LightList		lastLightList;
 
 				f32 maxIntensity = 0.0f;
 				LightList::iterator ite = manualLights.begin();
@@ -215,10 +232,18 @@ namespace dream
 						else
 						{
 							f32 distance = ((*ite)->GetPosition() - rend->GetPosition()).GetLengthPow2();
-							if (distance < vertexLightList.top())
+							// 压入一个光源
+							vertexLightList.push(make_pair<f32, LightPtr>(std::move(distance), std::move(*ite)));
+							
+							LightPtr temp = vertexLightList.top().second;
+							vertexLightList.pop();
+							lastLightList.push_back(temp);
 						}
 					}
 				}
+			}
+			else if (pass->GetLightingMode() == DRE_LIGHTING_FORWARD_ADD)
+			{
 			}
 
 		}
@@ -528,21 +553,6 @@ namespace dream
 
 				} // !skipBecauseOfLightType
 			}
-
-		}
-		else // mSuppressRenderStateChanges
-		{
-			fireRenderSingleObject(rend, pass, mAutoParamDataSource, NULL, mSuppressRenderStateChanges);
-			// Just render
-			mDestRenderSystem->setCurrentPassIterationCount(1);
-			if (rend->preRender(this, mDestRenderSystem))
-				mDestRenderSystem->_render(ro);
-			rend->postRender(this, mDestRenderSystem);
-		}
-
-		// Reset view / projection changes if any
-		resetViewProjMode(passTransformState);
-		OgreProfileEndGPUEvent("Material: " + pass->getParent()->getParent()->getName());
 	}
 
 #	define SetShaderRenderParam(shader, reflect)															\

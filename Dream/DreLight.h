@@ -104,6 +104,35 @@ namespace dream
 
 		Vector3 GetPosition() { return mParentNode->_GetFinalPosition(); };
 
+		Vector3 GetDistance() { return mParentNode->Get}
+
+		f32 CalculateAttenFactor(f32 distance) 
+		{
+			f32 atten = 1.0f;
+
+			switch (mType)
+			{
+			case dream::E_LIGHTPOINT:
+				if (distance > mRadius)
+					atten = 0.0f;
+				else
+				{
+					atten = 1.0f / (mAttenuationConst + mAttenuationLinear * distance + mAttenuationQuad * pow(distance, 2.0f));
+				}
+				break;
+			case dream::E_LIGHTSPOT:
+				if (distance > mRadius)
+					atten = 0.0f;
+				else
+				{
+					atten = 1.0f / (mAttenuationConst + mAttenuationLinear * distance + mAttenuationQuad * pow(distance, 2.0f));
+				}
+				break;
+			case dream::E_LIGHTDIRECTIONAL:
+				atten = 1.0f;
+			}
+		}
+
 		/** 设置光照强度 */
 		f32 GetIntensity() const { return mIntensity; }
 		void SetIntensity(f32 intensity) { mIntensity = intensity; }

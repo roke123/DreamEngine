@@ -67,6 +67,8 @@ namespace dream
 		void RenderSingleObject(RenderablePtr& rend, PassPtr& pass, const LightList& manualLights);
 
 	private:
+		RenderSystemPtr	mRenderSystem;
+
 		typedef set<CameraPtr, ConvertibleObjectNameCmp>	CameraSet;
 		/// 所有产生的相机集
 		CameraSet						mAllCameraSet;

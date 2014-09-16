@@ -84,7 +84,9 @@ namespace dream
 		*/
 		bool GetWaitForVerticalBlank(void) const override;
 
-		void _FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, const LightList& manualLights) override;
+		void _SetPass(PassPtr& pass);
+
+		void _FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, LightList& manualLights) override;
 
 		/** äÖÈ¾º¯Êý
 		*/

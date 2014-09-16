@@ -51,7 +51,9 @@
     <ClInclude Include="DreMemoryStdAlloc.h" />
     <ClInclude Include="DreMesh.h" />
     <ClInclude Include="DreNode.h" />
+    <ClInclude Include="DreNullable.h" />
     <ClInclude Include="DrePass.h" />
+    <ClInclude Include="DreRenderSystemConfig.h" />
     <ClInclude Include="DreShader.h" />
     <ClInclude Include="DreImage.h" />
     <ClInclude Include="DreImageLoader.h" />

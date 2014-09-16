@@ -37,6 +37,9 @@
     <Filter Include="头文件\SceneManager\Component">
       <UniqueIdentifier>{2cbd73a9-b991-4862-a68a-4ba3f64d7829}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\Memory">
+      <UniqueIdentifier>{16bd5121-c779-4007-a00a-885dedbb4a89}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DreMath.h">
@@ -306,15 +309,6 @@
     <ClInclude Include="DreSceneManagerDeclaration.h">
       <Filter>头文件\SceneManager</Filter>
     </ClInclude>
-    <ClInclude Include="DreMemoryAllocatorBaseObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DreMemoryAllocatorConfig.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DreMemoryStdAlloc.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DreTechnique.h">
       <Filter>头文件\RenderSystem</Filter>
     </ClInclude>
@@ -338,6 +332,21 @@
     </ClInclude>
     <ClInclude Include="DreRenderable.h">
       <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreRenderSystemConfig.h">
+      <Filter>头文件\RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DreNullable.h">
+      <Filter>头文件\Root</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMemoryStdAlloc.h">
+      <Filter>头文件\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMemoryAllocatorConfig.h">
+      <Filter>头文件\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="DreMemoryAllocatorBaseObject.h">
+      <Filter>头文件\Memory</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

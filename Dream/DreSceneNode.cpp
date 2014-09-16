@@ -17,7 +17,7 @@ namespace dream
 	//-------------------------------------------------------------------------------
 	mNodeName(name), mTagID(tagID), mLayerID(layerID),
 		mLocalPosition(initialPosition), mLocalScale(initialScale), mLocalOrientation(initialOrientation),
-		mIsEnable(true), mTransformUpdated(false), mChildrenTransformUpdated(true), mRecaleWorldMatrix(false),
+		mIsEnable(true), mTransformUpdated(false), mChildrenTransformUpdated(false),
 		mParentNode(nullptr),
 		OnAttachObject("Node::OnAttachObject"),
 		OnUpdateNode("Node::OnUpdateNode"),
@@ -33,19 +33,19 @@ namespace dream
 	* @param	name		子节点名
 	* @param	child		子节点指针
 	*/
-	void SceneNode::AttachChildNode(const string& name, SceneNodePtr& child)
+	void SceneNode::AttachChildNode(string name, SceneNodePtr child)
 	{
-		mNodeSet.insert(child);
+		mNodeMap.insert(make_pair<string, SceneNodePtr>(std::move(name), std::move(child)));
 		
 		// 设置子节点名
 		child->_SetNodeName(name);
 		// 设置子节点需要更新
-		child->mIsEnable = false;
+		child->_MarkNeedUpdate();
 		// 设置父节点
 		child->_SetParent(shared_from_this());
 
 		// 通知父节点
-		_NotifyChanged();
+		this->_NotifyTransformChanged();
 		// 发出OnAttachChildNode事件
 		OnAttachChildNode._Notify(shared_from_this(), child);
 	}
@@ -56,21 +56,19 @@ namespace dream
 	*/
 	SceneNodePtr SceneNode::DetachChildNode(const string& name)
 	{
-		SceneNodeSetIte ite = mNodeSet.find(SceneNodePtr(DREAM_NEW SceneNode(name)));
-		DreAssert(ite == mNodeSet.end(), "SceneNode中不存在同名子节点");
+		SceneNodeSetIte ite = mNodeMap.find(name);
+		DreAssert(ite == mNodeMap.end(), "SceneNode中不存在同名子节点");
 
-		SceneNodePtr ret = *ite;
-		mNodeSet.erase(ite);
+		SceneNodePtr ret = ite->second;
+		mNodeMap.erase(ite);
 
-		// 设置子节点名
-		ret->_SetNodeName("");
 		// 设置子节点需要更新
 		ret->mIsEnable = true;
 		// 设置父节点
 		ret->_SetParent(nullptr);
 
 		// 通知父节点
-		_NotifyChanged();
+		this->_NotifyTransformChanged();
 		// 发出OnDetachChildNode事件
 		OnDetachChildNode._Notify(shared_from_this(), ret);
 		return ret;
@@ -80,15 +78,15 @@ namespace dream
 	*/
 	SceneNodePtr SceneNode::FindSubNodeByName(const string& name)
 	{
-		SceneNodeSetIte ite = mNodeSet.find(SceneNodePtr(new SceneNode(name)));
-		if(ite != mNodeSet.end())
-			return *ite;
+		SceneNodeSetIte ite = mNodeMap.find(name);
+		if (ite != mNodeMap.end())
+			return ite->second;
 
-		ite = mNodeSet.begin();
-		for(; ite != mNodeSet.end(); ++ ite)
+		ite = mNodeMap.begin();
+		for (; ite != mNodeMap.end(); ++ite)
 		{
 			SceneNodePtr SceneNode = nullptr;
-			SceneNode = (*ite)->FindSubNodeByName(name);
+			SceneNode = ite->second->FindSubNodeByName(name);
 			if(SceneNode != nullptr)
 				return SceneNode;
 		}
@@ -97,12 +95,13 @@ namespace dream
 	}
 
 	/** 获取转换矩阵 */
-	Matrix4 SceneNode::GetWorldMatrix() const
+	Matrix4 SceneNode::GetWorldMatrix()
 	{
-		if(mRecaleWorldMatrix)
+		if (!mTransformUpdated)
 		{
+			_ForceUpwardTransformUpdate();
+
 			mWorldMatrix = Matrix4::SetMatrixForNode(mFinalPosition, mFinalScale, mFinalOrientation);
-			mRecaleWorldMatrix = false;
 		}
 		return mWorldMatrix;
 	}
@@ -176,26 +175,41 @@ namespace dream
 			mFinalOrientation = Cross(mLocalOrientation, mFinalOrientation);
 
 			// 标志其子节点未更新
-			SceneNodeSetIte ite = mNodeSet.begin();
-			for (; ite != mNodeSet.end(); ++ite)
+			SceneNodeSetIte ite = mNodeMap.begin();
+			for (; ite != mNodeMap.end(); ++ite)
 			{
-				(*ite)->_NeedUpdate();
+				ite->second->_MarkNeedUpdate();
 			}
 
 		}
 	}
 
-	/** 通知父节点子节点以改变需要更新，debug状态下会检查是否存在同名节点
-	*/
-	void SceneNode::_NotifyChanged()
+	void SceneNode::_ForceUpwardTransformUpdate()
 	{
-		// 标志子节点需要更新
+		if (this->GetParent() != nullptr)
+			this->GetParent()->_ForceUpwardTransformUpdate();
+
+		_TransformUpdate();
+	}
+
+	/** 通知父节点本节点属性改变需要更新，debug状态下会检查是否存在同名节点
+	* @note override by Node
+	*/
+	void SceneNode::_NotifyNeedUpdate()
+	{
+		this->mChildrenTransformUpdated = false;
+
+		if (mParentNode != nullptr)
+			mParentNode->_NotifyNeedUpdate();
+	}
+
+	/** 通知父节点本节点的 transform 属性发生改变 */
+	void SceneNode::_NotifyTransformChanged()
+	{
+		// 标志本节点需要更新
 		this->mTransformUpdated = false;
-		if(mParentNode != nullptr)
-		{
-			// 继续通知上一节点
-			this->mParentNode->_NotifyChanged();
-		}
+		// 通知父节点需要更新
+		this->mParentNode->_NotifyNeedUpdate();
 	}
 
 	SceneNodePtr SceneNode::GetParent() const
