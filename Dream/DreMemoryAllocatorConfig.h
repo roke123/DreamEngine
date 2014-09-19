@@ -11,8 +11,11 @@
 namespace dream
 {
 
-	template <MemoryCategory Cat> class CategorisedAllocPolicy : public StdAllocPolicy{};
-	template <MemoryCategory Cat, size_t align = 0> class CategorisedAlignAllocPolicy : public StdAlignedAllocPolicy<align>{};
+	class CategorisedAllocPolicy : public StdAllocPolicy {};
+	template<size_t align> class CategorisedAlignAllocPolicy : public StdAlignedAllocPolicy<align>{};
+
+#	define DREAM_MALLOC(bytes, category)		CategorisedAllocPolicy::allocateBytes(bytes, __FILE__, __LINE__, __FUNCTION__)
+#	define DREAM_FREE(ptr, category)			CategorisedAllocPolicy::deallocateBytes((void*)ptr)
 
 #	define DREAM_NEW			new //(__FILE__, __LINE__, __FUNCTION__)
 #	define DREAM_DELETE			delete

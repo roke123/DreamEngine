@@ -10,6 +10,9 @@ namespace dream
 	{
 	public:
 		static const Vector3 ZeroVector;
+		static const Vector3 Forward;
+		static const Vector3 Up;
+		static const Vector3 Left;
 	public:
 	//¹¹Ôìº¯Êý
 		Vector3() : mX(0.0f), mY(0.0f), mZ(0.0f)

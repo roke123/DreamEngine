@@ -67,6 +67,8 @@ namespace dream
 			}
 		}
 
+		Vector3 GetPosition() { return mParentNode->_GetFinalPosition(); };
+
 		LayerID GetLayerID();
 
 		virtual void _OnStartUp() {};

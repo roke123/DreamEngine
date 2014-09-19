@@ -64,39 +64,78 @@ namespace dream
 		void ResetLight( LightDesc desc );
 
 		/** 取得光源属性描述 */
-		LightDesc GetLightDesc();
+		LightDesc GetLightDesc() const;
 
 		/// 所有光源公用属性
 		/** 取环境光颜色 */
-		Color GetAmbientColor() { return mAmbientColor; };
+		Color GetAmbientColor() const { return mAmbientColor; };
 		void SetAmbientColor(Color color) { mAmbientColor = color; };
 
 		/** 取漫射光颜色 */
-		Color GetDiffuseColor() { return mDiffuseColor; };
+		Color GetDiffuseColor() const { return mDiffuseColor; };
 		void SetDiffuseColor(Color color) { mDiffuseColor = color;  };
 
 		/** 取放射光颜色 */
-		Color GetSpecularColor() { return ; };
+		Color GetSpecularColor() const { return; };
 		void SetSpecularColor(Color color) { mSpecularColor = color; };
 
 		/** 取得常量衰减 */
-		f32 GetAttenuationConst() { return mAttenuationConst; };
+		f32 GetAttenuationConst() const { return mAttenuationConst; };
 		void SetAttenuationConst(f32 attenuation) { mAttenuationConst = attenuation; };
 
 		/** 取得线性衰减 */
-		f32 GetAttenuationLinear() { return mAttenuationLinear; };
+		f32 GetAttenuationLinear() const { return mAttenuationLinear; };
 		void SetAttenuationLinear(f32 attenuation) { mAttenuationLinear = attenuation; };
 
 		/** 取得二次衰减 */
-		f32 GetAttenuationQuad() { return mAttenuationQuad; };
+		f32 GetAttenuationQuad() const { return mAttenuationQuad; };
 		void SetAttenuationQuad(f32 attenuation) { mAttenuationQuad = attenuation; };
 
 		/** 取得光照范围半径 */
-		f32 GetLightRadius() { return mRadius; };
+		f32 GetLightRadius() const { return mRadius; };
 		void SetLightRadius(f32 radius) { mRadius = radius; };
 
 		/** 取得光线类型 */
-		E_LIGHTTYPE GetLightType() { return mType; };
+		E_LIGHTTYPE GetLightType() const { return mType; };
+
+		/** 设置光线重要性 */
+		DRE_LIGHT_IMPORTANCE GetLightImportance() const { return mImportance; }
+		void SetLightImportance(DRE_LIGHT_IMPORTANCE importance) { mImportance = importance; }
+
+		Vector3 GetPosition() { return mParentNode->_GetFinalPosition(); };
+
+		Vector3 GetDistance() { return mParentNode->Get}
+
+		f32 CalculateAttenFactor(f32 distance) 
+		{
+			f32 atten = 1.0f;
+
+			switch (mType)
+			{
+			case dream::E_LIGHTPOINT:
+				if (distance > mRadius)
+					atten = 0.0f;
+				else
+				{
+					atten = 1.0f / (mAttenuationConst + mAttenuationLinear * distance + mAttenuationQuad * pow(distance, 2.0f));
+				}
+				break;
+			case dream::E_LIGHTSPOT:
+				if (distance > mRadius)
+					atten = 0.0f;
+				else
+				{
+					atten = 1.0f / (mAttenuationConst + mAttenuationLinear * distance + mAttenuationQuad * pow(distance, 2.0f));
+				}
+				break;
+			case dream::E_LIGHTDIRECTIONAL:
+				atten = 1.0f;
+			}
+		}
+
+		/** 设置光照强度 */
+		f32 GetIntensity() const { return mIntensity; }
+		void SetIntensity(f32 intensity) { mIntensity = intensity; }
 
 	/// 专用于聚光灯光源，非聚光灯光源使用会触发断言
 		/** 取得聚光灯外角 */
@@ -149,8 +188,17 @@ namespace dream
 		/// 光照范围半径
 		f32 mRadius;
 
+		/// 光照强度
+		f32 mIntensity;
+
 		/// 光线类型
 		E_LIGHTTYPE mType;
+
+		/// 光线重要性
+		DRE_LIGHT_IMPORTANCE	mImportance;
+
+		/// 裁剪标志
+		LayerIDList				mCullingMask;
 	};
 
 }	// end namespace dream  

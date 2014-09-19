@@ -44,16 +44,11 @@ namespace dream
 	class ConvertibleObject;
 	typedef shared_ptr<ConvertibleObject>				ConvertibleObjectPtr;
 
-
 	class Camera;
 	typedef shared_ptr<Camera>							CameraPtr;
 
 	class DefaultCamera;
 	typedef shared_ptr<DefaultCamera>					DefaultCameraPtr;
-
-	class Renderable;
-	typedef shared_ptr<Renderable>						RenderablePtr;
-	typedef vector<RenderablePtr>						RenderableList;
 
 	class RenderQueue;
 	typedef shared_ptr<RenderQueue>						RenderQueuePtr;
@@ -71,6 +66,7 @@ namespace dream
 
 	typedef u16											TagID;
 	typedef u16											LayerID;
+	typedef list<LayerID>								LayerIDList;
 
 	/*template<class T>
 	class RenderQueue;

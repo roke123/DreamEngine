@@ -34,7 +34,7 @@ THE SOFTWARE.
 
 #include "DreComplieConfig.h"
 
-namespace Ogre
+namespace dream
 {
 
 	/** \addtogroup Core

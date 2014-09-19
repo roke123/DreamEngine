@@ -37,6 +37,8 @@ namespace dream
 		*/
 		virtual bool GetWaitForVerticalBlank(void) const = 0;
 
+		virtual void _FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, LightList& manualLights) = 0;
+
 		/** äÖÈ¾º¯Êý
 		*/
 		virtual void Render(void) = 0;

@@ -18,6 +18,11 @@
 #include "DreReadBuffer.h"
 #include "DreMemoryReadBuffer.h"
 #include "DreDataBufferFactory.h"
+#include "DreRenderable.h"
+#include "DrePass.h"
+#include "DreLight.h"
+
+#include "DreSceneManager.h"
 
 #include <boost/smart_ptr.hpp>
 
@@ -30,7 +35,7 @@ namespace dream
 	RenderSystem(adapter),
 		mD3D11Device(d3dDevice), mD3D11Context(d3dContext),
 		mIsRasterizerStateChange(false), mIsBlendStateChange(false), mIsDepthStencilStateChange(false),
-		mIsVertexBufferChange(false), mISindexBufferChange(false), mIsMaterialChange(false),
+		mIsVertexBufferChange(false), mIsIndexBufferChange(false), mIsMaterialChange(false),
 		mPrimitive(D3D11_PRIMITIVE_TRIANGLE), 
 		mInputLayout(nullptr)
 	{
@@ -162,6 +167,392 @@ namespace dream
 	bool D3D11RenderSystem::GetWaitForVerticalBlank(void) const
 	{
 		return mWaitForVerticalBlank == 0;
+	}
+
+	typedef std::pair<f32, LightPtr>																LightAndDistance;
+	struct LightAndDistanceLess
+	{
+		bool operator () (const LightAndDistance& lh, const LightAndDistance& rh)
+		{
+			return lh.first < rh.first;
+		}
+	};
+	typedef priority_queue<LightAndDistance, vector<LightAndDistance>, LightAndDistanceLess>		VertexLightList;
+
+	void D3D11RenderSystem::_SetPass(PassPtr& pass)
+	{
+
+	}
+
+	void D3D11RenderSystem::_FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, LightList& manualLights)
+	{
+		// Issue view / projection changes if any
+		//useRenderableViewProjMode(rend, passTransformState);
+
+		// mark per-object params as dirty
+		//mGpuParamsDirty |= (uint16)GPV_PER_OBJECT;
+
+		this->SetCullingMode(pass->GetCullingMode());
+		// 如果当前使用pass开启了光照
+		if (pass->GetLightingEnabled())
+		{
+
+			if (pass->GetLightingMode() == DRE_LIGHTING_FORWARD_ADD)
+			{
+				// 使用前向附加光照，对最亮的方向光源做Forward Base渲染
+
+				f32 dis = Float::PositiveInfinity;		
+				
+				LightPtr		brightestDirLightIte = nullptr;
+				LightList		importantLightList;
+				VertexLightList vertexLightList;
+				LightList		lastLightList;
+
+				f32 maxIntensity = 0.0f;
+				LightList::iterator ite = manualLights.begin();
+				for (; ite != manualLights.end(); ++ite)
+				{
+					if ((*ite)->GetLightType() == E_LIGHTDIRECTIONAL)
+					{
+						if (maxIntensity < (*ite)->GetIntensity())
+						{
+							// 找到最亮的方向光源
+							brightestDirLightIte = *ite;
+						}
+						else if ((*ite)->GetLightImportance() == DRE_LIGHT_IMPORTANT) 
+						{
+							// 找到所有 important 的光源
+							importantLightList.push_back(*ite);
+						}
+						else if (vertexLightList.size() < MAX_VERTEX_LIGHTING_COUNT) 
+						{
+							f32 distance = ((*ite)->GetPosition() - rend->GetPosition()).GetLengthPow2();
+							vertexLightList.push(make_pair<f32, LightPtr>(std::move(distance), std::move(*ite)));
+						}
+						else
+						{
+							f32 distance = ((*ite)->GetPosition() - rend->GetPosition()).GetLengthPow2();
+							// 压入一个光源
+							vertexLightList.push(make_pair<f32, LightPtr>(std::move(distance), std::move(*ite)));
+							
+							LightPtr temp = vertexLightList.top().second;
+							vertexLightList.pop();
+							lastLightList.push_back(temp);
+						}
+					}
+				}
+			}
+			else if (pass->GetLightingMode() == DRE_LIGHTING_FORWARD_ADD)
+			{
+			}
+
+		}
+			if (doLightIteration)
+			{
+				// Create local light list for faster light iteration setup
+				static LightList localLightList;
+
+
+				// Here's where we issue the rendering operation to the render system
+				// Note that we may do this once per light, therefore it's in a loop
+				// and the light parameters are updated once per traversal through the
+				// loop
+				const LightList& rendLightList = rend->getLights();
+
+				bool iteratePerLight = pass->getIteratePerLight();
+
+				// deliberately unsigned in case start light exceeds number of lights
+				// in which case this pass would be skipped
+				int lightsLeft = 1;
+				if (iteratePerLight)
+				{
+					lightsLeft = static_cast<int>(rendLightList.size()) - pass->getStartLight();
+					// Don't allow total light count for all iterations to exceed max per pass
+					if (lightsLeft > static_cast<int>(pass->getMaxSimultaneousLights()))
+					{
+						lightsLeft = static_cast<int>(pass->getMaxSimultaneousLights());
+					}
+				}
+
+
+				const LightList* pLightListToUse;
+				// Start counting from the start light
+				size_t lightIndex = pass->getStartLight();
+				size_t depthInc = 0;
+
+				while (lightsLeft > 0)
+				{
+					// Determine light list to use
+					if (iteratePerLight)
+					{
+						// Starting shadow texture index.
+						size_t shadowTexIndex = mShadowTextures.size();
+						if (mShadowTextureIndexLightList.size() > lightIndex)
+							shadowTexIndex = mShadowTextureIndexLightList[lightIndex];
+
+						localLightList.resize(pass->getLightCountPerIteration());
+
+						LightList::iterator destit = localLightList.begin();
+						unsigned short numShadowTextureLights = 0;
+						for (; destit != localLightList.end()
+							&& lightIndex < rendLightList.size();
+							++lightIndex, --lightsLeft)
+						{
+							Light* currLight = rendLightList[lightIndex];
+
+							// Check whether we need to filter this one out
+							if ((pass->getRunOnlyForOneLightType() &&
+								pass->getOnlyLightType() != currLight->getType()) ||
+								(pass->getLightMask() & currLight->getLightMask()) == 0)
+							{
+								// Skip
+								// Also skip shadow texture(s)
+								if (isShadowTechniqueTextureBased())
+								{
+									shadowTexIndex += mShadowTextureCountPerType[currLight->getType()];
+								}
+								continue;
+							}
+
+							*destit++ = currLight;
+
+							// potentially need to update content_type shadow texunit
+							// corresponding to this light
+							if (isShadowTechniqueTextureBased())
+							{
+								size_t textureCountPerLight = mShadowTextureCountPerType[currLight->getType()];
+								for (size_t j = 0; j < textureCountPerLight && shadowTexIndex < mShadowTextures.size(); ++j)
+								{
+									// link the numShadowTextureLights'th shadow texture unit
+									unsigned short tuindex =
+										pass->_getTextureUnitWithContentTypeIndex(
+										TextureUnitState::CONTENT_SHADOW, numShadowTextureLights);
+									if (tuindex > pass->getNumTextureUnitStates()) break;
+
+									// I know, nasty const_cast
+									TextureUnitState* tu =
+										const_cast<TextureUnitState*>(
+										pass->getTextureUnitState(tuindex));
+									const TexturePtr& shadowTex = mShadowTextures[shadowTexIndex];
+									tu->_setTexturePtr(shadowTex);
+									Camera *cam = shadowTex->getBuffer()->getRenderTarget()->getViewport(0)->getCamera();
+									tu->setProjectiveTexturing(!pass->hasVertexProgram(), cam);
+									mAutoParamDataSource->setTextureProjector(cam, numShadowTextureLights);
+									++numShadowTextureLights;
+									++shadowTexIndex;
+									// Have to set TU on rendersystem right now, although
+									// autoparams will be set later
+									mDestRenderSystem->_setTextureUnitSettings(tuindex, *tu);
+								}
+							}
+
+
+
+						}
+						// Did we run out of lights before slots? e.g. 5 lights, 2 per iteration
+						if (destit != localLightList.end())
+						{
+							localLightList.erase(destit, localLightList.end());
+							lightsLeft = 0;
+						}
+						pLightListToUse = &localLightList;
+
+						// deal with the case where we found no lights
+						// since this is light iteration, we shouldn't render at all
+						if (pLightListToUse->empty())
+							return;
+
+					}
+					else // !iterate per light
+					{
+						// Use complete light list potentially adjusted by start light
+						if (pass->getStartLight() || pass->getMaxSimultaneousLights() != OGRE_MAX_SIMULTANEOUS_LIGHTS ||
+							pass->getLightMask() != 0xFFFFFFFF)
+						{
+							// out of lights?
+							// skip manual 2nd lighting passes onwards if we run out of lights, but never the first one
+							if (pass->getStartLight() > 0 &&
+								pass->getStartLight() >= rendLightList.size())
+							{
+								break;
+							}
+							else
+							{
+								localLightList.clear();
+								LightList::const_iterator copyStart = rendLightList.begin();
+								std::advance(copyStart, pass->getStartLight());
+								// Clamp lights to copy to avoid overrunning the end of the list
+								size_t lightsCopied = 0, lightsToCopy = std::min(
+									static_cast<size_t>(pass->getMaxSimultaneousLights()),
+									rendLightList.size() - pass->getStartLight());
+
+								//localLightList.insert(localLightList.begin(), 
+								//	copyStart, copyEnd);
+
+								// Copy lights over
+								for (LightList::const_iterator iter = copyStart; iter != rendLightList.end() && lightsCopied < lightsToCopy; ++iter)
+								{
+									if ((pass->getLightMask() & (*iter)->getLightMask()) != 0)
+									{
+										localLightList.push_back(*iter);
+										lightsCopied++;
+									}
+								}
+
+								pLightListToUse = &localLightList;
+							}
+						}
+						else
+						{
+							pLightListToUse = &rendLightList;
+						}
+						lightsLeft = 0;
+					}
+
+					fireRenderSingleObject(rend, pass, mAutoParamDataSource, pLightListToUse, mSuppressRenderStateChanges);
+
+					// Do we need to update GPU program parameters?
+					if (pass->isProgrammable())
+					{
+						useLightsGpuProgram(pass, pLightListToUse);
+					}
+					// Do we need to update light states? 
+					// Only do this if fixed-function vertex lighting applies
+					if (pass->getLightingEnabled() && passSurfaceAndLightParams)
+					{
+						useLights(*pLightListToUse, pass->getMaxSimultaneousLights());
+					}
+					// optional light scissoring & clipping
+					ClipResult scissored = CLIPPED_NONE;
+					ClipResult clipped = CLIPPED_NONE;
+					if (lightScissoringClipping &&
+						(pass->getLightScissoringEnabled() || pass->getLightClipPlanesEnabled()))
+					{
+						// if there's no lights hitting the scene, then we might as 
+						// well stop since clipping cannot include anything
+						if (pLightListToUse->empty())
+							continue;
+
+						if (pass->getLightScissoringEnabled())
+							scissored = buildAndSetScissor(*pLightListToUse, mCameraInProgress);
+
+						if (pass->getLightClipPlanesEnabled())
+							clipped = buildAndSetLightClip(*pLightListToUse);
+
+						if (scissored == CLIPPED_ALL || clipped == CLIPPED_ALL)
+							continue;
+					}
+					// issue the render op		
+					// nfz: check for gpu_multipass
+					mDestRenderSystem->setCurrentPassIterationCount(pass->getPassIterationCount());
+					// We might need to update the depth bias each iteration
+					if (pass->getIterationDepthBias() != 0.0f)
+					{
+						float depthBiasBase = pass->getDepthBiasConstant() +
+							pass->getIterationDepthBias() * depthInc;
+						// depthInc deals with light iteration 
+
+						// Note that we have to set the depth bias here even if the depthInc
+						// is zero (in which case you would think there is no change from
+						// what was set in _setPass(). The reason is that if there are
+						// multiple Renderables with this Pass, we won't go through _setPass
+						// again at the start of the iteration for the next Renderable
+						// because of Pass state grouping. So set it always
+
+						// Set modified depth bias right away
+						mDestRenderSystem->_setDepthBias(depthBiasBase, pass->getDepthBiasSlopeScale());
+
+						// Set to increment internally too if rendersystem iterates
+						mDestRenderSystem->setDeriveDepthBias(true,
+							depthBiasBase, pass->getIterationDepthBias(),
+							pass->getDepthBiasSlopeScale());
+					}
+					else
+					{
+						mDestRenderSystem->setDeriveDepthBias(false);
+					}
+					depthInc += pass->getPassIterationCount();
+
+					// Finalise GPU parameter bindings
+					updateGpuProgramParameters(pass);
+
+					if (rend->preRender(this, mDestRenderSystem))
+						mDestRenderSystem->_render(ro);
+					rend->postRender(this, mDestRenderSystem);
+
+					if (scissored == CLIPPED_SOME)
+						resetScissor();
+					if (clipped == CLIPPED_SOME)
+						resetLightClip();
+				} // possibly iterate per light
+			}
+			else // no automatic light processing
+			{
+				// Even if manually driving lights, check light type passes
+				bool skipBecauseOfLightType = false;
+				if (pass->getRunOnlyForOneLightType())
+				{
+					if (!manualLightList ||
+						(manualLightList->size() == 1 &&
+						manualLightList->at(0)->getType() != pass->getOnlyLightType()))
+					{
+						skipBecauseOfLightType = true;
+					}
+				}
+
+				if (!skipBecauseOfLightType)
+				{
+					fireRenderSingleObject(rend, pass, mAutoParamDataSource, manualLightList, mSuppressRenderStateChanges);
+					// Do we need to update GPU program parameters?
+					if (pass->isProgrammable())
+					{
+						// Do we have a manual light list?
+						if (manualLightList)
+						{
+							useLightsGpuProgram(pass, manualLightList);
+						}
+
+					}
+
+					// Use manual lights if present, and not using vertex programs that don't use fixed pipeline
+					if (manualLightList &&
+						pass->getLightingEnabled() && passSurfaceAndLightParams)
+					{
+						useLights(*manualLightList, pass->getMaxSimultaneousLights());
+					}
+
+					// optional light scissoring
+					ClipResult scissored = CLIPPED_NONE;
+					ClipResult clipped = CLIPPED_NONE;
+					if (lightScissoringClipping && manualLightList && pass->getLightScissoringEnabled())
+					{
+						scissored = buildAndSetScissor(*manualLightList, mCameraInProgress);
+					}
+					if (lightScissoringClipping && manualLightList && pass->getLightClipPlanesEnabled())
+					{
+						clipped = buildAndSetLightClip(*manualLightList);
+					}
+
+					// don't bother rendering if clipped / scissored entirely
+					if (scissored != CLIPPED_ALL && clipped != CLIPPED_ALL)
+					{
+						// issue the render op		
+						// nfz: set up multipass rendering
+						mDestRenderSystem->setCurrentPassIterationCount(pass->getPassIterationCount());
+						// Finalise GPU parameter bindings
+						updateGpuProgramParameters(pass);
+
+						if (rend->preRender(this, mDestRenderSystem))
+							mDestRenderSystem->_render(ro);
+						rend->postRender(this, mDestRenderSystem);
+					}
+					if (scissored == CLIPPED_SOME)
+						resetScissor();
+					if (clipped == CLIPPED_SOME)
+						resetLightClip();
+
+				} // !skipBecauseOfLightType
+			}
 	}
 
 #	define SetShaderRenderParam(shader, reflect)															\
@@ -342,13 +733,13 @@ namespace dream
 			mIsVertexBufferChange = false;
 		}
 
-		if(mISindexBufferChange)
+		if(mIsIndexBufferChange)
 		{
 			// 设置索引缓冲区
 			mD3D11Context->IASetIndexBuffer(mCurrentIndexBuffer->GetIndexBuffer().Get(),
 				D3D11RenderMapping::Get(mCurrentIndexBuffer->GetIndexType()), 0);
 
-			mISindexBufferChange = false;
+			mIsIndexBufferChange = false;
 		}
 
 		// 开始渲染RenderTarget

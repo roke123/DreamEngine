@@ -60,7 +60,7 @@ namespace dream
 		bool						mIsBlendStateChange;
 		bool						mIsDepthStencilStateChange;
 		bool						mIsVertexBufferChange;
-		bool						mISindexBufferChange;
+		bool						mIsIndexBufferChange;
 		bool						mIsMaterialChange;
 
 	public:
@@ -83,6 +83,10 @@ namespace dream
 		/** ·µ»ØÊÇ·ñµÈ´ý´¹Ö±¿Õ°×
 		*/
 		bool GetWaitForVerticalBlank(void) const override;
+
+		void _SetPass(PassPtr& pass);
+
+		void _FillRenderParameters(SceneManager* sceneMgr, RenderablePtr rend, PassPtr pass, LightList& manualLights) override;
 
 		/** äÖÈ¾º¯Êý
 		*/

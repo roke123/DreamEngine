@@ -4,7 +4,10 @@
 
 namespace dream
 {
-	const Vector3 Vector3::ZeroVector = Vector3(0.0f, 0.0f, 0.0f);
+	const Vector3 Vector3::ZeroVector	= Vector3(0.0f, 0.0f, 0.0f);
+	const Vector3 Vector3::Forward		= Vector3(0.0f, 0.0f, -1.0f);
+	const Vector3 Vector3::Up			= Vector3(0.0f, 1.0f, 0.0f);	
+	const Vector3 Vector3::Left			= Vector3(-1.0f, 0.0f, 0.0f);
 
 	Vector3 Vector3::operator * ( const Matrix4& m ) const
 	{
