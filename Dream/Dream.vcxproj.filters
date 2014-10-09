@@ -348,6 +348,12 @@
     <ClInclude Include="DreMemoryAllocatorBaseObject.h">
       <Filter>头文件\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="DreVertexIndexData.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="DreLodStrategy.h">
+      <Filter>头文件\SceneManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EulerAngles.cpp">
@@ -456,6 +462,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="DreSceneManager.cpp">
+      <Filter>头文件\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="DreVertexIndexData.cpp">
       <Filter>头文件\SceneManager</Filter>
     </ClCompile>
   </ItemGroup>

@@ -13,6 +13,7 @@ namespace dream
 	enum COMPONENT_TYPE
 	{
 		COMPONENT_LIGHT,
+		COMPONENT_LOD_STRATEGY,
 	};
 
 	/** 挂载于Scene Node上的组件用于实现各种功能

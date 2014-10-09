@@ -234,57 +234,6 @@ namespace dream
 		DRE_FILL_SOLID_MODE         = 3,
 	};	// end enum DRE_FILL_MODE
 
-	   /// 顶点元素语义
-	enum DRE_VERTEX_EMELENT_SEMANTICS {
-		/// 位置数据，3 float per vertex
-		DRE_VERTEX_ELEMENT_POSITION = 0,
-		/// 混合比重
-		DRE_VERTEX_ELEMENT_BLEND_WEIGHTS = 1,
-        /// 混合索引
-        DRE_VERTEX_ELEMENT_BLEND_INDICES = 2,
-		/// 法线数据, 3 float per vertex
-		DRE_VERTEX_ELEMENT_NORMAL = 3,
-		/// 漫反射颜色
-		DRE_VERTEX_ELEMENT_DIFFUSE = 4,
-		/// 镜面反射颜色
-		DRE_VERTEX_ELEMENT_SPECULAR = 5,
-		/// 纹理坐标
-		DRE_VERTEX_ELEMENT_TEXTURE_COORDINATES = 6,
-        /// 副法线数据
-        DRE_VERTEX_ELEMENT_BINORMAL = 7,
-        /// 切线数据
-        DRE_VERTEX_ELEMENT_TANGENT = 8,
-		/// 自定义数据
-		DRE_VERTEX_ELEMENT_CUSTOM = 9,
-	};
-
-    /// 顶点元素类型
-    enum DRE_VERTEX_ELEMENT_TYPE
-    {
-        DRE_VERTEX_EMELENT_TYPE_FLOAT1 = 0,
-        DRE_VERTEX_EMELENT_TYPE_FLOAT2 = 1,
-        DRE_VERTEX_EMELENT_TYPE_FLOAT3 = 2,
-        DRE_VERTEX_EMELENT_TYPE_FLOAT4 = 3,
-		DRE_VERTEX_EMELENT_TYPE_SHORT1 = 4,
-		DRE_VERTEX_EMELENT_TYPE_SHORT2 = 5,
-		DRE_VERTEX_EMELENT_TYPE_SHORT3 = 6,
-		DRE_VERTEX_EMELENT_TYPE_SHORT4 = 7,
-        DRE_VERTEX_EMELENT_TYPE_UBYTE4 = 8,
-        /// D3D style compact colour
-        DRE_VERTEX_EMELENT_TYPE_COLOUR_ARGB = 9,
-        /// GL style compact colour
-        DRE_VERTEX_EMELENT_TYPE_COLOUR_ABGR = 10
-    };
-
-	/// 索引元素类型
-	enum DRE_INDEX_ELEMENT_TYPE
-	{
-		/// 16位索引
-		DRE_INDEX_ELEMENT_TYPE_U16 = sizeof(u16),
-		/// 32位索引
-		DRE_INDEX_ELEMENT_TYPE_U32 = sizeof(u32),
-	};
-
 	enum DRE_MATERIAL_COLOR_OPTIONS
 	{
 		/// 不使用任何材质颜色
@@ -340,6 +289,63 @@ namespace dream
 		DRE_LIGHT_AUTO,
 		/// 在光照渲染时，避免选择该光
 		DRE_LIGHT_UNIMPORTANT,
+	};
+
+	enum DRE_VERTEX_ELEMENT_SEMANTIC : u8
+	{
+		/// 顶点坐标
+		DRE_VES_POSITION			= 0,
+		/// 骨骼权重
+		DRE_VES_BLEND_WEIGHT		= DRE_VES_POSITION + 1,	
+		/// 骨骼索引
+		DRE_VES_BLEND_INDEX			= DRE_VES_BLEND_WEIGHT + 1,
+		/// 顶点法线
+		DRE_VES_NORMAL				= DRE_VES_NORMAL + 1,
+		/// 漫反射反射率
+		DRE_VES_DUFFISE				= DRE_VES_DUFFISE + 1,
+		/// 镜面反射反射率
+		DRE_VES_SPECULAR			= DRE_VES_SPECULAR + 1,
+		/// 顶点纹理坐标
+		DRE_VES_TEXTURE_COORDNATE	= DRE_VES_SPECULAR + 1,
+		/// 顶点副法线
+		DRE_VES_BINORMAL			= DRE_VES_TEXTURE_COORDNATE + 1,
+		/// 顶点切线
+		DRE_VES_TANGENT				= DRE_VES_BINORMAL + 1,
+		/// 顶点颜色
+		DRE_VES_COLOR				= DRE_VES_TANGENT + 1,
+		/// 顶点语义数量
+		DRE_VES_COUNT				= DRE_VES_COLOR + 1,
+
+	};	// end of enum DRE_VERTEX_ELEMENT_SEMANTIC
+
+	enum DRE_VERTEX_ELEMENT_TYPE : u8
+	{
+		/// 十六位非负整型值
+		DRE_VET_USHORT,
+		DRE_VET_USHORT2,
+		DRE_VET_USHORT3,
+		DRE_VET_USHORT4,
+		/// 32位非负整型值
+		DRE_VET_UINT,
+		DRE_VET_UINT2,
+		DRE_VET_UINT3,
+		DRE_VET_UINT4,
+		/// 非负规范化值，范围从（0 ~ 1）
+		DRE_VET_UNORM,
+		DRE_VET_UNORM2,
+		DRE_VET_UNORM3,
+		DRE_VET_UNORM4,
+		/// 浮点数
+		DRE_VET_FLOAT,
+		DRE_VET_FLOAT2,
+		DRE_VET_FLOAT3,
+		DRE_VET_FLOAT4,
+	};
+
+	enum DRE_INDEX_ELEMENT_TYPE : u8
+	{
+		DRE_IET_USHORT,
+		DRE_IET_UINT,
 	};
 
 //------------------------------------------------- 渲染特性 --------------------------------------------------//

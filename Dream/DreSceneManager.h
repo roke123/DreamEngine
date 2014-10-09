@@ -64,7 +64,8 @@ namespace dream
 
 		SceneRootNode* GetRootNode() { return &mRootNode; }
 
-		void RenderSingleObject(RenderablePtr& rend, PassPtr& pass, const LightList& manualLights);
+		void RenderSingleObject(CameraPtr& camera, RenderablePtr& rend, 
+			PassPtr& pass, const LightList& manualLights);
 
 	private:
 		RenderSystemPtr	mRenderSystem;

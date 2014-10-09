@@ -45,8 +45,8 @@ namespace dream
 
 	struct VertexElement;
 	typedef list<VertexElement>							VertexDeclaration;
-	typedef VertexDeclaration::iterator					VertexElementIterator;
-	typedef VertexDeclaration::const_iterator			VertexElementConstIterator;
+	typedef VertexDeclaration::iterator					VertexDeclarationIte;
+	typedef VertexDeclaration::const_iterator			VertexDeclarationConstIte;
 
 	struct SamplerDesc;
 	typedef map<string, SamplerDesc>					SamplerDescMap;

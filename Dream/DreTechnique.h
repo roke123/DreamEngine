@@ -6,12 +6,20 @@
 #ifndef __DRE_TECHNIQUE_H__
 #define __DRE_TECHNIQUE_H__
 
+#include "DreSceneManagerDeclaration.h"
+
+#include "DreMaterial.h"
+
 namespace dream
 {
 
 	class Technique
 	{
+	private:
+		Materail* mParent;
 
+	public:
+		Material* GetMaterial();
 	};	// end of class Technique
 
 }	// end of namespace dream

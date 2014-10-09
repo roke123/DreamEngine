@@ -7,6 +7,7 @@
 #include "DreException.h"
 
 #include "DreMathDeclaration.h"
+#include "DreRenderDeclaration.h"
 
 namespace dream
 {
@@ -61,6 +62,12 @@ namespace dream
 
 	class QueuedRenderableCollection;
 	typedef shared_ptr<QueuedRenderableCollection>		QeuueRenderableCollectionPtr;
+
+	class VertexData;
+	typedef shared_ptr<VertexData>						VertexDataPtr;
+
+	class IndexData;
+	typedef shared_ptr<IndexData>						IndexDataPtr;
 
 	class QueuedRenderableVisitor;
 
